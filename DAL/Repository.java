@@ -71,22 +71,23 @@ public enum Repository implements IRepository {
     }
 
     @Override
-    public BE_Employee addEmployee(String jobTitle, int departmentId,
-            Date startEmploymentDate, int personId) {
+    public BE_Employee addEmployee(BE_Employee employee) throws SQLException {
         if (DBType == DatabaseType.IN_MEMORY) {
-            return MemoryDB.INSTANCE.addEmployee(jobTitle, departmentId, startEmploymentDate, personId);
+            return MemoryDB.INSTANCE.addEmployee(employee);
         } else if (DBType == DatabaseType.DATABASE) {
-
+            return dal_Employee.add(employee);
         }
+        return new BE_Employee();
     }
 
     @Override
-    public BE_Employee updateEmployee(BE_Employee employee) {
+    public BE_Employee updateEmployee(BE_Employee employee) throws SQLException {
         if (DBType == DatabaseType.IN_MEMORY) {
             return MemoryDB.INSTANCE.updateEmployee(employee);
         } else if (DBType == DatabaseType.DATABASE) {
-
+            return dal_Employee.update(employee);
         }
+        return new BE_Employee();
     }
 
     @Override

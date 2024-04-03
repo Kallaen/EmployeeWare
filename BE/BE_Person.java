@@ -11,9 +11,9 @@ public class BE_Person {
     private String _country;
     private String _address;
     private String _city;
-    private int _zipCode;
+    private String _zipCode;
 
-    public BE_Person(int _id, String _cprNo, String _firstName, String _lastName, String _country, String _address, String _city, int _zipCode) {
+    public BE_Person(int _id, String _cprNo, String _firstName, String _lastName, String _country, String _address, String _city, String _zipCode) {
         this._id = _id;
         this._cprNo = _cprNo;
         this._firstName = _firstName;
@@ -48,11 +48,11 @@ public class BE_Person {
         this._city = _city;
     }
 
-    public int get_zipCode() {
+    public String get_zipCode() {
         return this._zipCode;
     }
 
-    public void set_zipCode(int _zipCode) {
+    public void set_zipCode(String _zipCode) {
         this._zipCode = _zipCode;
     }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import BE.BE_Employee;
 
 public class DAL_Employee {
+    
     public ArrayList<BE_Employee> getAll() throws SQLException {
         String sqlSelect = "SELECT * FROM Employee;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
@@ -85,15 +86,15 @@ public class DAL_Employee {
         }
     }
 
-    public int add(String jobTitle, int departmentId, String emergencyContactName, String emergencyContactNo, Date startEmploymentDate, int personId) throws SQLException {
+    public BE_Employee add(BE_Employee employee) throws SQLException {
         String sqlInsert = "INSERT INTO Employee (jobTitle, departmentId, emergencyContactName, emergencyContactNo, startEmploymentDate, personId) VALUES (?,?,?,?,?,?);";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, jobTitle);
-            stmt.setInt(2, departmentId);
-            stmt.setString(3, emergencyContactName);
-            stmt.setString(4, emergencyContactNo);
-            stmt.setDate(5, startEmploymentDate);
-            stmt.setInt(6, personId);
+            stmt.setString(1, employee.get_jobTitle());
+            stmt.setInt(2, employee.get_departmentId());
+            stmt.setString(3, employee.get_emergencyContactName());
+            stmt.setString(4, employee.get_emergencyContactNo());
+            stmt.setDate(5, employee.get_startEmploymentDate());
+            stmt.setInt(6, employee.get_personId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -102,7 +103,7 @@ public class DAL_Employee {
     
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
+                    return new BE_Employee(generatedKeys.getInt(1), employee.get_jobTitle(), employee.get_departmentId(), employee.get_emergencyContactName(), employee.get_emergencyContactNo(), employee.get_startEmploymentDate(), employee.get_personId());
                 }
                 else {
                     throw new SQLException("DAL_Employee - add - Creating employee failed, no ID obtained.");
@@ -113,25 +114,23 @@ public class DAL_Employee {
         }
     }
 
-    public BE_Employee update(int id, String jobTitle, int departmentId, String emergencyContactName, String emergencyContactNo, Date startEmploymentDate, Date endEmploymentDate, int personId) throws SQLException {
-
+    public BE_Employee update(BE_Employee employee) throws SQLException {
         String sqlInsert = "UPDATE Employee SET jobTitle = ?, departmentId = ?, emergencyContactName = ?, emergencyContactNo = ?, startEmploymentDate = ?, endEmploymentDate = ?, personId = ? WHERE id = ?;";
-
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, jobTitle);
-            stmt.setInt(2, departmentId);
-            stmt.setString(3, emergencyContactName);
-            stmt.setString(4, emergencyContactNo);
-            stmt.setDate(5, startEmploymentDate);
-            stmt.setDate(6, endEmploymentDate);
-            stmt.setInt(7, personId);
-            stmt.setInt(8, id);
+            stmt.setString(1, employee.get_jobTitle());
+            stmt.setInt(2, employee.get_departmentId());
+            stmt.setString(3, employee.get_emergencyContactName());
+            stmt.setString(4, employee.get_emergencyContactNo());
+            stmt.setDate(5, employee.get_startEmploymentDate());
+            stmt.setDate(6, employee.get_endEmploymentDate());
+            stmt.setInt(7, employee.get_personId());
+            stmt.setInt(8, employee.get_id());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
                 throw new SQLException("DAL_Employee - update - Updating employee failed, no rows affected.");
             }
-            return new BE_Employee(id, jobTitle, departmentId, emergencyContactName, emergencyContactNo, startEmploymentDate, endEmploymentDate, personId);
+            return employee;
         } catch (SQLException e) {
             throw new SQLException("DAL_Employee - update - failed to update entity. " + e.getMessage());
         }

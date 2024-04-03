@@ -52,9 +52,9 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
-    public BE_Employee addEmployee(String jobTitle, int departmentId, Date startDeploymentDate, int personId) {
+    public BE_Employee addEmployee(BE_Employee employee) {
         employees.sort(Comparator.comparing(BE_Employee::get_id));
-        BE_Employee e = new BE_Employee(employees.get(employees.size()-1).get_id()+1, jobTitle, departmentId, startDeploymentDate, personId);
+        BE_Employee e = new BE_Employee(employees.get(employees.size()-1).get_id()+1, employee.get_jobTitle(), employee.get_departmentId(), employee.get_emergencyContactName(), employee.get_emergencyContactNo(), employee.get_startEmploymentDate(), employee.get_personId());
         return e;
     }
 
@@ -86,9 +86,9 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
-    public BE_Person addPerson(String cprNo, String firstName, String lastName, String country, String address, String city, int zipCode) {
+    public BE_Person addPerson(BE_Person person) {
         persons.sort(Comparator.comparing(BE_Person::get_id));
-        BE_Person p = new BE_Person(persons.get(persons.size()-1).get_id()+1, cprNo, firstName, lastName, country, address, city, zipCode);
+        BE_Person p = new BE_Person(persons.get(persons.size()-1).get_id()+1, person.get_cprNo(), person.get_firstName(), person.get_lastName(), person.get_country(), person.get_address(), person.get_city(), person.get_zipCode());
         return p;
     }
 

@@ -1,6 +1,6 @@
 package BE;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class BE_Employee {
     public BE_Employee() {}
