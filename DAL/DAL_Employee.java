@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import BE.BE_Employee;
 
 public class DAL_Employee {
-    
+
     public ArrayList<BE_Employee> getAll() throws SQLException {
         String sqlSelect = "SELECT * FROM Employee;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
@@ -103,7 +103,8 @@ public class DAL_Employee {
     
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return new BE_Employee(generatedKeys.getInt(1), employee.get_jobTitle(), employee.get_departmentId(), employee.get_emergencyContactName(), employee.get_emergencyContactNo(), employee.get_startEmploymentDate(), employee.get_personId());
+                    employee.set_id(generatedKeys.getInt(1));
+                    return employee;
                 }
                 else {
                     throw new SQLException("DAL_Employee - add - Creating employee failed, no ID obtained.");
@@ -115,8 +116,8 @@ public class DAL_Employee {
     }
 
     public BE_Employee update(BE_Employee employee) throws SQLException {
-        String sqlInsert = "UPDATE Employee SET jobTitle = ?, departmentId = ?, emergencyContactName = ?, emergencyContactNo = ?, startEmploymentDate = ?, endEmploymentDate = ?, personId = ? WHERE id = ?;";
-        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+        String sqlUpdate = "UPDATE Employee SET jobTitle = ?, departmentId = ?, emergencyContactName = ?, emergencyContactNo = ?, startEmploymentDate = ?, endEmploymentDate = ?, personId = ? WHERE id = ?;";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlUpdate)) {
             stmt.setString(1, employee.get_jobTitle());
             stmt.setInt(2, employee.get_departmentId());
             stmt.setString(3, employee.get_emergencyContactName());
@@ -136,20 +137,18 @@ public class DAL_Employee {
         }
     }
 
-    public void remove() {
+    public boolean delete(BE_Employee employee) throws SQLException {
+        String sqlDelete = "DELETE FROM Employee WHERE id = ?;";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlDelete)) {
+            stmt.setInt(1, employee.get_id());
 
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("DAL_Employee - delete - Deleting employee failed, no rows affected.");
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Employee - delete - failed to delete entity. " + e.getMessage());
+        }
     }
-
-    public void geById() {
-
-    }
-
-    public void getByName() {
-
-    }
-
-    public void getByCPR() {
-
-    }
-
 }

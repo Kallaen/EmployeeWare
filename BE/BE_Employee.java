@@ -103,4 +103,17 @@ public class BE_Employee {
     public void set_personId(int _personId) {
         this._personId = _personId;
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BE_Employee other = (BE_Employee) o;
+        return get_id() == other.get_id();
+    }
+
+    @Override
+    public final int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,12 +1,11 @@
 package DAL;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
-import BE.BE_Employee;
 import BE.BE_Person;
 
 public class DAL_Person {
@@ -24,42 +23,105 @@ public class DAL_Person {
                 String country = rs.getString("country");
                 String address = rs.getString("address");
                 String city = rs.getString("city");
-                int zipCode = rs.getInt("zipCode");
+                String zipCode = rs.getString("zipCode");
 
                 BE_Person person = new BE_Person(id, cprNo, firstName, lastName, country, address, city, zipCode);
                 arr.add(person);
             }
             return arr;
         } catch (SQLException e) {
-            throw new SQLException("DAL_Employee - getAll - failed to fetch data. " + e.getMessage());
+            throw new SQLException("DAL_Person - getAll - failed to fetch data. " + e.getMessage());
         }
     }
 
     public ArrayList<BE_Person> getByEmployeeId(int employeeId) throws SQLException {
-        String sqlSelect = "SELECT Person.id, Person.cprNo, Person.firstName, Person.lastName, Person.country, Person.address, Person.city, Person.zipCode FROM Person INNER JOIN Employee ON Person.id = Employee.personId;";
+        String sqlSelect = "SELECT Person.id, Person.cprNo, Person.firstName, Person.lastName, Person.country, Person.address, Person.city, Person.zipCode FROM Person INNER JOIN Employee ON Person.id = Employee.personId WHERE Employee.id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
-            stmt.setInt(1, departmentId);
+            stmt.setInt(1, employeeId);
             ResultSet rs = stmt.executeQuery();
-            ArrayList<BE_Employee> arr = new ArrayList<>();
+            ArrayList<BE_Person> arr = new ArrayList<>();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String jobTitle = rs.getString("jobTitle");
-                String emergencyContactName = rs.getString("emergencyContactName");
-                String emergencyContactNo = rs.getString("emergencyContactNo");
-                Date startEmploymentDate = rs.getDate("startEmploymentDate");
-                Date endEmploymentDate = rs.getDate("endEmploymentDate");
-                int personId = rs.getInt("personId");
+                String cprNo = rs.getString("cprNo");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String country = rs.getString("country");
+                String address = rs.getString("address");
+                String city = rs.getString("city");
+                String zipCode = rs.getString("zipCode");
 
-                BE_Employee e = new BE_Employee(id, jobTitle, departmentId, emergencyContactName, emergencyContactNo,
-                        startEmploymentDate, endEmploymentDate, personId);
-                arr.add(e);
+                BE_Person person = new BE_Person(id, cprNo, firstName, lastName, country, address, city, zipCode);
+                arr.add(person);
             }
             return arr;
         } catch (SQLException e) {
-            throw new SQLException("DAL_Employee - getByDepartmentId - failed to fetch data. " + e.getMessage());
+            throw new SQLException("DAL_Person - getByEmployeeId - failed to fetch data. " + e.getMessage());
         }
     }
 
-    
+    public BE_Person add(BE_Person person) throws SQLException {
+        String sqlInsert = "INSERT INTO Person (cprNo, firstName, lastName, country, address, city, zipCode) VALUES (?,?,?,?,?,?,?);";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, person.get_cprNo());
+            stmt.setString(2, person.get_firstName());
+            stmt.setString(3, person.get_lastName());
+            stmt.setString(4, person.get_country());
+            stmt.setString(5, person.get_address());
+            stmt.setString(6, person.get_city());
+            stmt.setString(7, person.get_zipCode());
 
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("DAL_Employee - add - Creating employee failed, no rows affected.");
+            }
+    
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    person.set_id(generatedKeys.getInt(1));
+                    return person;
+                }
+                else {
+                    throw new SQLException("DAL_Person - add - Creating person failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Person - add - failed to add new entity. " + e.getMessage());
+        }
+    }
+
+    public BE_Person update(BE_Person person) throws SQLException {
+        String sqlUpdate = "UPDATE Person SET cprNo = ?, firstName = ?, lastName = ?, country = ?, address = ?, city = ?, zipCode = ? WHERE id = ?;";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlUpdate)) {
+            stmt.setString(1, person.get_cprNo());
+            stmt.setString(2, person.get_firstName());
+            stmt.setString(3, person.get_lastName());
+            stmt.setString(4, person.get_country());
+            stmt.setString(5, person.get_address());
+            stmt.setString(6, person.get_city());
+            stmt.setString(7, person.get_zipCode());
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("DAL_Person - update - Updating person failed, no rows affected.");
+            }
+            return person;
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Person - update - failed to update entity. " + e.getMessage());
+        }
+    }
+
+    public boolean delete(BE_Person person) throws SQLException {
+        String sqlDelete = "DELETE FROM Person WHERE id = ?;";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlDelete)) {
+            stmt.setInt(1, person.get_id());
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("DAL_Person - delete - Deleting person failed, no rows affected.");
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Person - delete - failed to delete entity. " + e.getMessage());
+        }
+    }
 }

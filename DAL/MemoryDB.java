@@ -1,5 +1,6 @@
 package DAL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -17,7 +18,7 @@ public enum MemoryDB implements IRepository {
 
     MemoryDB() {
         persons = new ArrayList<>();
-        persons.add(new BE_Person(1, "2310902233", "Kasper", "Svensson", "Danmark", "Stenhuggervej 12", "Esbjerg", 6710));
+        persons.add(new BE_Person(1, "2310902233", "Kasper", "Svensson", "Danmark", "Stenhuggervej 12", "Esbjerg", "6710"));
 
         departments = new ArrayList<>();
         BE_Department warehouseDepartment = new BE_Department(1, "Warehouse");
@@ -70,19 +71,30 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
+    public boolean deleteEmployee(BE_Employee employee) throws SQLException {
+        for (BE_Employee e : employees)
+            if (e.get_id() == employee.get_id()) {
+                employees.remove(e);
+                return true;
+            }
+        return false;
+    }
+
+    @Override
     public ArrayList<BE_Person> getAllPersons() {
         return persons;    
     }
 
     @Override
-    public BE_Person getPersonByEmployeeId(int employeeId) {
+    public ArrayList<BE_Person> getPersonsByEmployeeId(int employeeId) {
+        ArrayList<BE_Person> arr = new ArrayList<>();
         for (BE_Employee e : employees)
             if (e.get_id() == employeeId) {
                 for (BE_Person p : persons)
                     if (e.get_personId() == p.get_id())
-                        return p;
+                        arr.add(p);
             }
-        return new BE_Person();
+        return arr;
     }
 
     @Override
@@ -101,5 +113,43 @@ public enum MemoryDB implements IRepository {
                 return person;
             }
         return new BE_Person();
+    }
+
+    @Override
+    public boolean deletePerson(BE_Person person) throws SQLException {
+        for (BE_Person p : persons)
+            if (p.get_id() == person.get_id()) {
+                persons.remove(p);
+                return true;
+            }
+        return false;
+    }
+
+    @Override
+    public BE_Department addDepartment(BE_Department department) throws SQLException {
+        departments.sort(Comparator.comparing(BE_Department::get_id));
+        BE_Department d = new BE_Department(employees.get(departments.size()-1).get_id()+1, department.get_name());
+        return d;
+    }
+
+    @Override
+    public BE_Department updateDepartment(BE_Department department) throws SQLException {
+        for (BE_Department d : departments)
+            if (d.get_id() == department.get_id()) {
+                departments.remove(d);
+                departments.add(department);
+                return department;
+            }
+        return new BE_Department();
+    }
+
+    @Override
+    public boolean deleteDepartment(BE_Department department) throws SQLException {
+        for (BE_Department d : departments)
+            if (d.get_id() == department.get_id()) {
+                departments.remove(d);
+                return true;
+            }
+        return false;
     }
 }

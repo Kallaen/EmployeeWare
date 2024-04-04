@@ -87,4 +87,17 @@ public class BE_Person {
     public void set_cprNo(String _cprNo) {
         this._cprNo = _cprNo;
     }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BE_Person other = (BE_Person) o;
+        return get_id() == other.get_id();
+    }
+
+    @Override
+    public final int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -28,15 +28,16 @@ public class BE_Department {
     }
 
     @Override
-    public boolean equals(Object arg0) {
-        try {
-            BE_Department compareDep = (BE_Department) arg0;
-            if (compareDep.get_id() == this.get_id() && compareDep.get_name() == this.get_name())
-                return true;
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BE_Department other = (BE_Department) o;
+        return get_id() == other.get_id();
+    }
+
+    @Override
+    public final int hashCode() {
+        return getClass().hashCode();
     }
 
 }
