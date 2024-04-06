@@ -62,13 +62,13 @@ public class DAL_Person {
     public BE_Person add(BE_Person person) throws SQLException {
         String sqlInsert = "INSERT INTO Person (cprNo, firstName, lastName, country, address, city, zipCode) VALUES (?,?,?,?,?,?,?);";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, person.get_cprNo());
-            stmt.setString(2, person.get_firstName());
-            stmt.setString(3, person.get_lastName());
-            stmt.setString(4, person.get_country());
-            stmt.setString(5, person.get_address());
-            stmt.setString(6, person.get_city());
-            stmt.setString(7, person.get_zipCode());
+            stmt.setString(1, person.getCprNo());
+            stmt.setString(2, person.getFirstName());
+            stmt.setString(3, person.getLastName());
+            stmt.setString(4, person.getCountry());
+            stmt.setString(5, person.getAddress());
+            stmt.setString(6, person.getCity());
+            stmt.setString(7, person.getZipCode());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -77,7 +77,7 @@ public class DAL_Person {
     
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    person.set_id(generatedKeys.getInt(1));
+                    person.setId(generatedKeys.getInt(1));
                     return person;
                 }
                 else {
@@ -92,13 +92,13 @@ public class DAL_Person {
     public BE_Person update(BE_Person person) throws SQLException {
         String sqlUpdate = "UPDATE Person SET cprNo = ?, firstName = ?, lastName = ?, country = ?, address = ?, city = ?, zipCode = ? WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlUpdate)) {
-            stmt.setString(1, person.get_cprNo());
-            stmt.setString(2, person.get_firstName());
-            stmt.setString(3, person.get_lastName());
-            stmt.setString(4, person.get_country());
-            stmt.setString(5, person.get_address());
-            stmt.setString(6, person.get_city());
-            stmt.setString(7, person.get_zipCode());
+            stmt.setString(1, person.getCprNo());
+            stmt.setString(2, person.getFirstName());
+            stmt.setString(3, person.getLastName());
+            stmt.setString(4, person.getCountry());
+            stmt.setString(5, person.getAddress());
+            stmt.setString(6, person.getCity());
+            stmt.setString(7, person.getZipCode());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -113,7 +113,7 @@ public class DAL_Person {
     public boolean delete(BE_Person person) throws SQLException {
         String sqlDelete = "DELETE FROM Person WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlDelete)) {
-            stmt.setInt(1, person.get_id());
+            stmt.setInt(1, person.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {

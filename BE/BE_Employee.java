@@ -5,103 +5,125 @@ import java.sql.Date;
 public class BE_Employee {
     public BE_Employee() {}
      
-    private int _id;
-    private String _jobTitle;
-    private int _departmentId;
-    private String _emergencyContactName;
-    private String _emergencyContactNo; 
-    private Date _startEmploymentDate;
-    private Date _endEmploymentDate;
-    private int _personId;
+    private int id;
+    private String jobTitle;
+    private int departmentId;
+    private String emergencyContactName;
+    private String emergencyContactNo;
+    private Date startEmploymentDate;
+    private Date endEmploymentDate;
+    private int personId;
+
+    private BE_Department department;
+    private BE_Person person;
 
     public BE_Employee(int _id, String _jobTitle, int _departmentId, Date _startEmploymentDate, int personId) {
-        this._id = _id;
-        this._jobTitle = _jobTitle;
-        this._departmentId = _departmentId;
-        this._startEmploymentDate = _startEmploymentDate;
+        this.id = _id;
+        this.jobTitle = _jobTitle;
+        this.departmentId = _departmentId;
+        this.startEmploymentDate = _startEmploymentDate;
+        this.personId = personId;
     }
 
     public BE_Employee(int _id, String _jobTitle, int _departmentId, String _emergencyContactName, String _emergencyContactNo, Date _startEmploymentDate, int personId) {
-        this._id = _id;
-        this._jobTitle = _jobTitle;
-        this._departmentId = _departmentId;
-        this._emergencyContactName = _emergencyContactName;
-        this._emergencyContactNo = _emergencyContactNo;
-        this._startEmploymentDate = _startEmploymentDate;
+        this.id = _id;
+        this.jobTitle = _jobTitle;
+        this.departmentId = _departmentId;
+        this.emergencyContactName = _emergencyContactName;
+        this.emergencyContactNo = _emergencyContactNo;
+        this.startEmploymentDate = _startEmploymentDate;
+        this.personId = personId;
     }
 
     public BE_Employee(int _id, String _jobTitle, int _departmentId, String _emergencyContactName, String _emergencyContactNo, Date _startEmploymentDate, Date _endEmploymentDate, int personId) {
-        this._id = _id;
-        this._jobTitle = _jobTitle;
-        this._departmentId = _departmentId;
-        this._emergencyContactName = _emergencyContactName;
-        this._emergencyContactNo = _emergencyContactNo;
-        this._startEmploymentDate = _startEmploymentDate;
-        this._endEmploymentDate = _endEmploymentDate;
+        this.id = _id;
+        this.jobTitle = _jobTitle;
+        this.departmentId = _departmentId;
+        this.emergencyContactName = _emergencyContactName;
+        this.emergencyContactNo = _emergencyContactNo;
+        this.startEmploymentDate = _startEmploymentDate;
+        this.endEmploymentDate = _endEmploymentDate;
+        this.personId = personId;
     }
 
-    public int get_id() {
-        return this._id;
+    public int getId() {
+        return this.id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String get_jobTitle() {
-        return this._jobTitle;
+    public String getJobTitle() {
+        return this.jobTitle;
     }
 
-    public void set_jobTitle(String _jobTitle) {
-        this._jobTitle = _jobTitle;
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
-    public int get_departmentId() {
-        return this._departmentId;
+    public int getDepartmentId() {
+        return this.departmentId;
     }
 
-    public void set_departmentId(int _departmentId) {
-        this._departmentId = _departmentId;
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public String get_emergencyContactName() {
-        return this._emergencyContactName;
+    public String getEmergencyContactName() {
+        return this.emergencyContactName;
     }
 
-    public void set_emergencyContactName(String _emergencyContactName) {
-        this._emergencyContactName = _emergencyContactName;
+    public void setEmergencyContactName(String emergencyContactName) {
+        this.emergencyContactName = emergencyContactName;
     }
 
-    public String get_emergencyContactNo() {
-        return this._emergencyContactNo;
+    public String getEmergencyContactNo() {
+        return this.emergencyContactNo;
     }
 
-    public void set_emergencyContactNo(String _emergencyContactNo) {
-        this._emergencyContactNo = _emergencyContactNo;
+    public void setEmergencyContactNo(String emergencyContactNo) {
+        this.emergencyContactNo = emergencyContactNo;
     }
 
-    public Date get_startEmploymentDate() {
-        return this._startEmploymentDate;
+    public Date getStartEmploymentDate() {
+        return this.startEmploymentDate;
     }
 
-    public void set_startEmploymentDate(Date _startEmploymentDate) {
-        this._startEmploymentDate = _startEmploymentDate;
+    public void setStartEmploymentDate(Date startEmploymentDate) {
+        this.startEmploymentDate = startEmploymentDate;
     }
 
-    public Date get_endEmploymentDate() {
-        return this._endEmploymentDate;
+    public Date getEndEmploymentDate() {
+        return this.endEmploymentDate;
     }
 
-    public void set_endEmploymentDate(Date _endEmploymentDate) {
-        this._endEmploymentDate = _endEmploymentDate;
+    public void setEndEmploymentDate(Date endEmploymentDate) {
+        this.endEmploymentDate = endEmploymentDate;
     }
 
-    public int get_personId() {
-        return this._personId;
+    public int getPersonId() {
+        return this.personId;
     }
 
-    public void set_personId(int _personId) {
-        this._personId = _personId;
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
+    public BE_Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(BE_Department department) {
+        this.department = department;
+    }
+
+    public BE_Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(BE_Person person) {
+        this.person = person;
     }
 
     @Override
@@ -109,7 +131,7 @@ public class BE_Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BE_Employee other = (BE_Employee) o;
-        return get_id() == other.get_id();
+        return getId() == other.getId();
     }
 
     @Override

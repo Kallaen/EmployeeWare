@@ -3,28 +3,28 @@ package BE;
 public class BE_Department {
     public BE_Department() {}
 
-    private int _id;
-    private String _name;
+    private int id;
+    private String name;
 
     public BE_Department(int _id, String _name) {
-        this._id = _id;
-        this._name = _name;
+        this.id = _id;
+        this.name = _name;
     }
 
-    public int get_id() {
-        return this._id;
+    public int getId() {
+        return this.id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String get_name() {
-        return this._name;
+    public String getName() {
+        return this.name;
     }
 
-    public void set_name(String _name) {
-        this._name = _name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class BE_Department {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BE_Department other = (BE_Department) o;
-        return get_id() == other.get_id();
+        return getId() == other.getId();
     }
 
     @Override

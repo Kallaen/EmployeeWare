@@ -11,7 +11,7 @@ public class DAL_Department {
     public BE_Department add(BE_Department department) throws SQLException {
         String sqlInsert = "INSERT INTO Department (name) VALUES (?);";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, department.get_name());
+            stmt.setString(1, department.getName());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -20,7 +20,7 @@ public class DAL_Department {
     
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    department.set_id(generatedKeys.getInt(1));
+                    department.setId(generatedKeys.getInt(1));
                     return department;
                 }
                 else {
@@ -35,7 +35,7 @@ public class DAL_Department {
     public BE_Department update(BE_Department department) throws SQLException {
         String sqlUpdate = "UPDATE Department SET name = ? WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlUpdate)) {
-            stmt.setString(1, department.get_name());
+            stmt.setString(1, department.getName());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -50,7 +50,7 @@ public class DAL_Department {
     public boolean delete(BE_Department department) throws SQLException {
         String sqlDelete = "DELETE FROM Department WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlDelete)) {
-            stmt.setInt(1, department.get_id());
+            stmt.setInt(1, department.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {

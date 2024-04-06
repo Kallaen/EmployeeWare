@@ -89,12 +89,12 @@ public class DAL_Employee {
     public BE_Employee add(BE_Employee employee) throws SQLException {
         String sqlInsert = "INSERT INTO Employee (jobTitle, departmentId, emergencyContactName, emergencyContactNo, startEmploymentDate, personId) VALUES (?,?,?,?,?,?);";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, employee.get_jobTitle());
-            stmt.setInt(2, employee.get_departmentId());
-            stmt.setString(3, employee.get_emergencyContactName());
-            stmt.setString(4, employee.get_emergencyContactNo());
-            stmt.setDate(5, employee.get_startEmploymentDate());
-            stmt.setInt(6, employee.get_personId());
+            stmt.setString(1, employee.getJobTitle());
+            stmt.setInt(2, employee.getDepartmentId());
+            stmt.setString(3, employee.getEmergencyContactName());
+            stmt.setString(4, employee.getEmergencyContactNo());
+            stmt.setDate(5, employee.getStartEmploymentDate());
+            stmt.setInt(6, employee.getPersonId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -103,7 +103,7 @@ public class DAL_Employee {
     
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    employee.set_id(generatedKeys.getInt(1));
+                    employee.setId(generatedKeys.getInt(1));
                     return employee;
                 }
                 else {
@@ -118,14 +118,14 @@ public class DAL_Employee {
     public BE_Employee update(BE_Employee employee) throws SQLException {
         String sqlUpdate = "UPDATE Employee SET jobTitle = ?, departmentId = ?, emergencyContactName = ?, emergencyContactNo = ?, startEmploymentDate = ?, endEmploymentDate = ?, personId = ? WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlUpdate)) {
-            stmt.setString(1, employee.get_jobTitle());
-            stmt.setInt(2, employee.get_departmentId());
-            stmt.setString(3, employee.get_emergencyContactName());
-            stmt.setString(4, employee.get_emergencyContactNo());
-            stmt.setDate(5, employee.get_startEmploymentDate());
-            stmt.setDate(6, employee.get_endEmploymentDate());
-            stmt.setInt(7, employee.get_personId());
-            stmt.setInt(8, employee.get_id());
+            stmt.setString(1, employee.getJobTitle());
+            stmt.setInt(2, employee.getDepartmentId());
+            stmt.setString(3, employee.getEmergencyContactName());
+            stmt.setString(4, employee.getEmergencyContactNo());
+            stmt.setDate(5, employee.getStartEmploymentDate());
+            stmt.setDate(6, employee.getEndEmploymentDate());
+            stmt.setInt(7, employee.getPersonId());
+            stmt.setInt(8, employee.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -140,7 +140,7 @@ public class DAL_Employee {
     public boolean delete(BE_Employee employee) throws SQLException {
         String sqlDelete = "DELETE FROM Employee WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlDelete)) {
-            stmt.setInt(1, employee.get_id());
+            stmt.setInt(1, employee.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {

@@ -4,88 +4,88 @@ public class BE_Person {
     public BE_Person() {}
 
 
-    private int _id;
-    private String _cprNo;
-    private String _firstName;
-    private String _lastName;
-    private String _country;
-    private String _address;
-    private String _city;
-    private String _zipCode;
+    private int id;
+    private String cprNo;
+    private String firstName;
+    private String lastName;
+    private String country;
+    private String address;
+    private String city;
+    private String zipCode;
 
     public BE_Person(int _id, String _cprNo, String _firstName, String _lastName, String _country, String _address, String _city, String _zipCode) {
-        this._id = _id;
-        this._cprNo = _cprNo;
-        this._firstName = _firstName;
-        this._lastName = _lastName;
-        this._country = _country;
-        this._address = _address;
-        this._city = _city;
-        this._zipCode = _zipCode;
+        this.id = _id;
+        this.cprNo = _cprNo;
+        this.firstName = _firstName;
+        this.lastName = _lastName;
+        this.country = _country;
+        this.address = _address;
+        this.city = _city;
+        this.zipCode = _zipCode;
     }
 
-    public String get_country() {
-        return this._country;
+    public String getCountry() {
+        return this.country;
     }
 
-    public void set_country(String _country) {
-        this._country = _country;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String get_address() {
-        return this._address;
+    public String getAddress() {
+        return this.address;
     }
 
-    public void set_address(String _address) {
-        this._address = _address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String get_city() {
-        return this._city;
+    public String getCity() {
+        return this.city;
     }
 
-    public void set_city(String _city) {
-        this._city = _city;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String get_zipCode() {
-        return this._zipCode;
+    public String getZipCode() {
+        return this.zipCode;
     }
 
-    public void set_zipCode(String _zipCode) {
-        this._zipCode = _zipCode;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
-    public int get_id() {
-        return this._id;
+    public int getId() {
+        return this.id;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String get_firstName() {
-        return this._firstName;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public void set_firstName(String _firstName) {
-        this._firstName = _firstName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String get_lastName() {
-        return this._lastName;
+    public String getLastName() {
+        return this.lastName;
     }
 
-    public void set_lastName(String _lastName) {
-        this._lastName = _lastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String get_cprNo() {
-        return this._cprNo;
+    public String getCprNo() {
+        return this.cprNo;
     }
 
-    public void set_cprNo(String _cprNo) {
-        this._cprNo = _cprNo;
+    public void setCprNo(String cprNo) {
+        this.cprNo = cprNo;
     }
 
     @Override
@@ -93,11 +93,13 @@ public class BE_Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BE_Person other = (BE_Person) o;
-        return get_id() == other.get_id();
+        return getId() == other.getId();
     }
 
     @Override
     public final int hashCode() {
         return getClass().hashCode();
     }
+
+    
 }
