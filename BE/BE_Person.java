@@ -101,5 +101,8 @@ public class BE_Person {
         return getClass().hashCode();
     }
 
-    
+    @Override
+    public String toString() {
+        return getFirstName() + " " + getLastName();
+    }
 }

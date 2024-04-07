@@ -1,13 +1,46 @@
 package DAL;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 
 import BE.BE_Department;
 
 public class DAL_Department {
+
+    public ArrayList<BE_Department> getAll() throws SQLException {
+        String sqlSelect = "SELECT * FROM Department;";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<BE_Department> arr = new ArrayList<>();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+
+                BE_Department d = new BE_Department(id, name);
+                arr.add(d);
+            }
+            return arr;
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Department - getAll - failed to fetch data. " + e.getMessage());
+        }
+    }
+
+    public BE_Department getById(int id) throws SQLException {
+        String sqlSelect = "SELECT * FROM Department WHERE id = (?);";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+
+                return new BE_Department(id, name);
+            }
+            return new BE_Department();
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Department - getAll - failed to fetch data. " + e.getMessage());
+        }
+    }
+
     public BE_Department add(BE_Department department) throws SQLException {
         String sqlInsert = "INSERT INTO Department (name) VALUES (?);";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {

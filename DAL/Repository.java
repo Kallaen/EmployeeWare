@@ -13,16 +13,16 @@ public enum Repository implements IRepository {
 
     INSTANCE;
     private DatabaseType DBType;
-    private DAL_Employee dal_Employee;
-    private DAL_Person dal_Person;
-    private DAL_Department dal_Department;
+    private final DAL_Employee dal_Employee;
+    private final DAL_Person dal_Person;
+    private final DAL_Department dal_Department;
 
 
     public enum DatabaseType {
         IN_MEMORY, DATABASE
     }
     
-    private Repository() {
+    Repository() {
         this.DBType = DatabaseType.DATABASE;
         this.dal_Employee = new DAL_Employee();
         this.dal_Person = new DAL_Person();
@@ -48,7 +48,17 @@ public enum Repository implements IRepository {
         } else if (DBType == DatabaseType.DATABASE) {
             return dal_Employee.getAll();
         }
-        return new ArrayList<BE_Employee>();
+        return new ArrayList<>();
+    }
+
+    @Override
+    public BE_Employee getEmployeeById(int id) throws SQLException {
+        if (DBType == DatabaseType.IN_MEMORY) {
+            return MemoryDB.INSTANCE.getEmployeeById(id);
+        } else if (DBType == DatabaseType.DATABASE) {
+            return dal_Employee.getById(id);
+        }
+        return new BE_Employee();
     }
 
     @Override
@@ -58,7 +68,7 @@ public enum Repository implements IRepository {
         } else if (DBType == DatabaseType.DATABASE) {
             return dal_Employee.getByDepartmentId(departmentId);
         }
-        return new ArrayList<BE_Employee>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -68,7 +78,7 @@ public enum Repository implements IRepository {
         } else if (DBType == DatabaseType.DATABASE) {
             return dal_Employee.getByPersonId(personId);
         }
-        return new ArrayList<BE_Employee>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -108,7 +118,17 @@ public enum Repository implements IRepository {
         } else if (DBType == DatabaseType.DATABASE) {
             return dal_Person.getAll();
         }
-        return new ArrayList<BE_Person>();
+        return new ArrayList<>();
+    }
+
+    @Override
+    public BE_Person getPersonById(int id) throws SQLException {
+        if (DBType == DatabaseType.IN_MEMORY) {
+            return MemoryDB.INSTANCE.getPersonById(id);
+        } else if (DBType == DatabaseType.DATABASE) {
+            return dal_Person.getById(id);
+        }
+        return new BE_Person();
     }
 
     @Override
@@ -118,7 +138,7 @@ public enum Repository implements IRepository {
         } else if (DBType == DatabaseType.DATABASE) {
             return dal_Person.getByEmployeeId(employeeId);
         }
-        return new ArrayList<BE_Person>();
+        return new ArrayList<>();
     }
 
     @Override
@@ -149,6 +169,26 @@ public enum Repository implements IRepository {
             return dal_Person.delete(person);
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<BE_Department> getAllDepartments() throws SQLException {
+        if (DBType == DatabaseType.IN_MEMORY) {
+            return MemoryDB.INSTANCE.getAllDepartments();
+        } else if (DBType == DatabaseType.DATABASE) {
+            return dal_Department.getAll();
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public BE_Department getDepartmentById(int id) throws SQLException {
+        if (DBType == DatabaseType.IN_MEMORY) {
+            return MemoryDB.INSTANCE.getDepartmentById(id);
+        } else if (DBType == DatabaseType.DATABASE) {
+            return dal_Department.getById(id);
+        }
+        return new BE_Department();
     }
 
     @Override

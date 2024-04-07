@@ -15,6 +15,15 @@ public class BLL_Employee {
         return Repository.INSTANCE.getAllEmployees();
     }
 
+    public ArrayList<BE_Employee> getAllEmployeesWithDepartmentAndPerson() throws SQLException {
+        ArrayList<BE_Employee> employees = Repository.INSTANCE.getAllEmployees();
+        for (BE_Employee employee : employees) {
+            employee.setDepartment(Repository.INSTANCE.getDepartmentById(employee.getDepartmentId()));
+            employee.setPerson(Repository.INSTANCE.getPersonById(employee.getPersonId()));
+        }
+        return employees;
+    }
+
     public ArrayList<BE_Employee> getEmployeesByDepartmentId(int departmentId) throws SQLException {
         return Repository.INSTANCE.getEmployeesByDepartmentId(departmentId);
     }

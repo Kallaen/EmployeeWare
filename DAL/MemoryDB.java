@@ -1,6 +1,5 @@
 package DAL;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -12,9 +11,9 @@ public enum MemoryDB implements IRepository {
 
     INSTANCE;
 
-    private ArrayList<BE_Employee> employees;
-    private ArrayList<BE_Person> persons;
-    private ArrayList<BE_Department> departments;
+    private final ArrayList<BE_Employee> employees;
+    private final ArrayList<BE_Person> persons;
+    private final ArrayList<BE_Department> departments;
 
     MemoryDB() {
         persons = new ArrayList<>();
@@ -31,6 +30,15 @@ public enum MemoryDB implements IRepository {
     @Override
     public ArrayList<BE_Employee> getAllEmployees() {
         return employees;
+    }
+
+    @Override
+    public BE_Employee getEmployeeById(int id) {
+        for (BE_Employee e : employees) {
+            if (e.getId() == id)
+                return e;
+        }
+        return new BE_Employee();
     }
 
     @Override
@@ -55,8 +63,7 @@ public enum MemoryDB implements IRepository {
     @Override
     public BE_Employee addEmployee(BE_Employee employee) {
         employees.sort(Comparator.comparing(BE_Employee::getId));
-        BE_Employee e = new BE_Employee(employees.get(employees.size()-1).getId()+1, employee.getJobTitle(), employee.getDepartmentId(), employee.getEmergencyContactName(), employee.getEmergencyContactNo(), employee.getStartEmploymentDate(), employee.getPersonId());
-        return e;
+        return new BE_Employee(employees.get(employees.size()-1).getId()+1, employee.getJobTitle(), employee.getDepartmentId(), employee.getEmergencyContactName(), employee.getEmergencyContactNo(), employee.getStartEmploymentDate(), employee.getPersonId());
     }
 
     @Override
@@ -71,7 +78,7 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
-    public boolean deleteEmployee(BE_Employee employee) throws SQLException {
+    public boolean deleteEmployee(BE_Employee employee) {
         for (BE_Employee e : employees)
             if (e.getId() == employee.getId()) {
                 employees.remove(e);
@@ -83,6 +90,14 @@ public enum MemoryDB implements IRepository {
     @Override
     public ArrayList<BE_Person> getAllPersons() {
         return persons;    
+    }
+
+    @Override
+    public BE_Person getPersonById(int id) {
+        for (BE_Person p : persons)
+            if (p.getId() == id)
+                return p;
+        return new BE_Person();
     }
 
     @Override
@@ -100,8 +115,7 @@ public enum MemoryDB implements IRepository {
     @Override
     public BE_Person addPerson(BE_Person person) {
         persons.sort(Comparator.comparing(BE_Person::getId));
-        BE_Person p = new BE_Person(persons.get(persons.size()-1).getId()+1, person.getCprNo(), person.getFirstName(), person.getLastName(), person.getCountry(), person.getAddress(), person.getCity(), person.getZipCode());
-        return p;
+        return new BE_Person(persons.get(persons.size()-1).getId()+1, person.getCprNo(), person.getFirstName(), person.getLastName(), person.getCountry(), person.getAddress(), person.getCity(), person.getZipCode());
     }
 
     @Override
@@ -116,7 +130,7 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
-    public boolean deletePerson(BE_Person person) throws SQLException {
+    public boolean deletePerson(BE_Person person) {
         for (BE_Person p : persons)
             if (p.getId() == person.getId()) {
                 persons.remove(p);
@@ -126,14 +140,27 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
-    public BE_Department addDepartment(BE_Department department) throws SQLException {
-        departments.sort(Comparator.comparing(BE_Department::getId));
-        BE_Department d = new BE_Department(employees.get(departments.size()-1).getId()+1, department.getName());
-        return d;
+    public ArrayList<BE_Department> getAllDepartments() {
+        return departments;
     }
 
     @Override
-    public BE_Department updateDepartment(BE_Department department) throws SQLException {
+    public BE_Department getDepartmentById(int id) {
+        for (BE_Department d : departments) {
+            if (d.getId() == id)
+                return d;
+        }
+        return new BE_Department();
+    }
+
+    @Override
+    public BE_Department addDepartment(BE_Department department) {
+        departments.sort(Comparator.comparing(BE_Department::getId));
+        return new BE_Department(employees.get(departments.size()-1).getId()+1, department.getName());
+    }
+
+    @Override
+    public BE_Department updateDepartment(BE_Department department) {
         for (BE_Department d : departments)
             if (d.getId() == department.getId()) {
                 departments.remove(d);
@@ -144,7 +171,7 @@ public enum MemoryDB implements IRepository {
     }
 
     @Override
-    public boolean deleteDepartment(BE_Department department) throws SQLException {
+    public boolean deleteDepartment(BE_Department department) {
         for (BE_Department d : departments)
             if (d.getId() == department.getId()) {
                 departments.remove(d);

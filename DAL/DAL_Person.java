@@ -34,6 +34,28 @@ public class DAL_Person {
         }
     }
 
+    public BE_Person getById(int id) throws SQLException {
+        String sqlSelect = "SELECT * FROM Person WHERE id = (?);";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String cprNo = rs.getString("cprNo");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String country = rs.getString("country");
+                String address = rs.getString("address");
+                String city = rs.getString("city");
+                String zipCode = rs.getString("zipCode");
+
+                return new BE_Person(id, cprNo, firstName, lastName, country, address, city, zipCode);
+            }
+            return new BE_Person();
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Person - getAll - failed to fetch data. " + e.getMessage());
+        }
+    }
+
     public ArrayList<BE_Person> getByEmployeeId(int employeeId) throws SQLException {
         String sqlSelect = "SELECT Person.id, Person.cprNo, Person.firstName, Person.lastName, Person.country, Person.address, Person.city, Person.zipCode FROM Person INNER JOIN Employee ON Person.id = Employee.personId WHERE Employee.id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {

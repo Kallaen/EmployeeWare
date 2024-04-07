@@ -36,6 +36,29 @@ public class DAL_Employee {
         }
     }
 
+    public BE_Employee getById(int id) throws SQLException {
+        String sqlSelect = "SELECT * FROM Employee WHERE id = (?);";
+        try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String jobTitle = rs.getString("jobTitle");
+                int departmentId = rs.getInt("departmentId");
+                String emergencyContactName = rs.getString("emergencyContactName");
+                String emergencyContactNo = rs.getString("emergencyContactNo");
+                Date startEmploymentDate = rs.getDate("startEmploymentDate");
+                Date endEmploymentDate = rs.getDate("endEmploymentDate");
+                int personId = rs.getInt("personId");
+
+                return new BE_Employee(id, jobTitle, departmentId, emergencyContactName, emergencyContactNo,
+                        startEmploymentDate, endEmploymentDate, personId);
+            }
+            return new BE_Employee();
+        } catch (SQLException e) {
+            throw new SQLException("DAL_Employee - getAll - failed to fetch data. " + e.getMessage());
+        }
+    }
+
     public ArrayList<BE_Employee> getByDepartmentId(int departmentId) throws SQLException {
         String sqlSelect = "SELECT * FROM Employee WHERE departmentId = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlSelect)) {
