@@ -1,11 +1,11 @@
 import DAL.Repository;
-import GUI.MainWindow;
+import GUI.MainView;
 
 public class Main {
 
     public static void main(String[] args) {
         Repository.INSTANCE.setDatabaseType(Repository.DatabaseType.DATABASE);
-        MainWindow w = new MainWindow();
+        MainView w = new MainView();
         w.view();
     }
 }

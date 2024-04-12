@@ -12,17 +12,64 @@ public class DataView extends JFrame {
     public DataView(BE_Employee employee) {
         this.employee = employee;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800,700); //400 width and 500 height
         setTitle(employee.getPerson().toString());
-        setLayout(new BorderLayout());
+        setLayout(new GridLayout(0,2));
         setPersonData();
+        setEmployeeData();
+    }
+
+    private void setEmployeeData() {
+        JLabel jLblEmployee = new JLabel("Employee");
+
+        JLabel jLblEmergencyContactName = new JLabel("Emergency contact");
+        JTextField jTxtEmergencyContactName = new JTextField(employee.getEmergencyContactName());
+
+        JLabel jLblEmergencyContactNo = new JLabel("Emergency contact number");
+        JTextField jTxtEmergencyContactNo = new JTextField(employee.getEmergencyContactNo());
+
+        JLabel jLblStartEmploymentDate = new JLabel("Start date");
+        JTextField jTxtStartEmploymentDate = new JTextField(employee.getStartEmploymentDate() + "");
+
+        JLabel jLblEndEmploymentDate = new JLabel("End date");
+        JTextField jTxtEndEmploymentDate = new JTextField(employee.getEndEmploymentDate() + "");
+
+        JLabel jLblDepartment = new JLabel("Department");
+        JTextField jTxtDepartment = new JTextField(employee.getDepartment().getName());
+
+        JLabel jLblTitle = new JLabel("Job title");
+        JTextField jTxtTitle = new JTextField(employee.getJobTitle());
+
+        JPanel jPnlEmployee = new JPanel(new GridLayout(5, 1));
+
+        jPnlEmployee.add(jLblEmployee);
+
+        JPanel jPnlEmergencyContactName = new JPanel(new FlowLayout());
+        jPnlEmergencyContactName.add(jLblEmergencyContactName);
+        jPnlEmergencyContactName.add(jTxtEmergencyContactName);
+        jPnlEmployee.add(jPnlEmergencyContactName);
+
+        JPanel jPnlEmergencyContactNo = new JPanel(new FlowLayout());
+        jPnlEmergencyContactNo.add(jLblEmergencyContactNo);
+        jPnlEmergencyContactNo.add(jTxtEmergencyContactNo);
+        jPnlEmployee.add(jPnlEmergencyContactNo);
+
+        JPanel jPnlStartEmploymentDate = new JPanel(new FlowLayout());
+        jPnlStartEmploymentDate.add(jLblStartEmploymentDate);
+        jPnlStartEmploymentDate.add(jTxtStartEmploymentDate);
+        jPnlEmployee.add(jPnlStartEmploymentDate);
+
+        JPanel jPnlEndEmploymentDate = new JPanel(new FlowLayout());
+        jPnlEndEmploymentDate.add(jLblEndEmploymentDate);
+        jPnlEndEmploymentDate.add(jTxtEndEmploymentDate);
+        jPnlEmployee.add(jPnlEndEmploymentDate);
+
+        add(jPnlEmployee);
     }
 
     private void setPersonData() {
-        BE_Person person = employee.getPerson();
-        JLabel jLblPerson = new JLabel("Person");
-        add(jLblPerson);
+        BE_Person person = employee.getPerson();      
 
         JLabel jLblCprNo = new JLabel("CPR Number");
         JTextField jTxtCprNo = new JTextField(person.getCprNo());
@@ -70,22 +117,41 @@ public class DataView extends JFrame {
             }
         });
 
-        add(jLblCprNo);
-        add(jTxtCprNo);
-        add(jLblFirstName);
-        add(jTxtFirstName);
-        add(jLblLastName);
-        add(jTxtLastName);
-        add(jLblCountry);
-        add(jTxtCountry);
-        add(jLblAddress);
-        add(jTxtAddress);
-        add(jLblCity);
-        add(jTxtCity);
-        add(jLblZipCode);
-        add(jTxtZipCode);
-        add(jBtnEdit);
-        add(jBtnSave);
+        JPanel jPnlPerson = new JPanel(new GridLayout(6,1));
+        JLabel jLblPerson = new JLabel("Person");
+        jPnlPerson.add(jLblPerson);
+
+        JPanel jPnlCprNo = new JPanel(new FlowLayout());
+        jPnlCprNo.add(jLblCprNo);
+        jPnlCprNo.add(jTxtCprNo);
+
+        JPanel jPnlFirstName = new JPanel(new FlowLayout());
+        jPnlFirstName.add(jLblFirstName);
+        jPnlFirstName.add(jTxtFirstName);
+        jPnlFirstName.add(jLblLastName);
+        jPnlFirstName.add(jTxtLastName);
+        jPnlPerson.add(jPnlFirstName);
+
+        JPanel jPnlAddress = new JPanel(new FlowLayout());
+        jPnlAddress.add(jLblCountry);
+        jPnlAddress.add(jTxtCountry);
+        jPnlAddress.add(jLblAddress);
+        jPnlAddress.add(jTxtAddress);
+        jPnlPerson.add(jPnlAddress);
+    
+        JPanel jPnlCity = new JPanel(new FlowLayout());
+        jPnlCity.add(jLblCity);
+        jPnlCity.add(jTxtCity);
+        jPnlCity.add(jLblZipCode);
+        jPnlCity.add(jTxtZipCode);
+        jPnlPerson.add(jPnlCity);
+
+        JPanel jPnlBtn = new JPanel(new FlowLayout());
+        jPnlBtn.add(jBtnEdit);
+        jPnlBtn.add(jBtnSave);
+        jPnlPerson.add(jPnlBtn);
+
+        add(jPnlPerson);
     }
 
 

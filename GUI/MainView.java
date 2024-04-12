@@ -11,13 +11,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
-public class MainWindow extends JFrame {
+public class MainView extends JFrame {
 
     BLL_Department bll_department;
     BLL_Employee bll_employee;
     BLL_Person bll_person;
 
-    public MainWindow()  {
+    public MainView()  {
         bll_department = new BLL_Department();
         bll_employee = new BLL_Employee();
         bll_person = new BLL_Person();
@@ -46,7 +46,11 @@ public class MainWindow extends JFrame {
         exitMenuItem.setMnemonic(KeyEvent.VK_E);
         exitMenuItem.setToolTipText("Search...");
 
+        JMenuItem departmentMenu = new JMenuItem("Department");
+        departmentMenu.addActionListener((event) -> new DepartmentView().setVisible(true));
+
         fileMenu.add(searchMenuItem);
+        fileMenu.add(departmentMenu);
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
         menuBar.add(fileMenu);
@@ -64,7 +68,7 @@ public class MainWindow extends JFrame {
                     if (e.getClickCount() == 2) {
                         JTable target = (JTable) e.getSource();
                         int row = target.getSelectedRow(); // select a row
-                        int column = target.getSelectedColumn(); // select a column
+                        //int column = target.getSelectedColumn(); // select a column
 
                         DataView dataView = new DataView(model.getEmployee(row));
                         dataView.setVisible(true);
