@@ -3,6 +3,9 @@ package GUI;
 import BE.BE_Employee;
 
 import javax.swing.table.AbstractTableModel;
+import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class EmployeeTableModel extends AbstractTableModel {
@@ -30,11 +33,6 @@ public class EmployeeTableModel extends AbstractTableModel {
         return columns[columnIndex];
     }
 
-    /*    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        return clazz[columnIndex];
-    }*/
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         BE_Employee employee = getEmployee(rowIndex);
@@ -57,10 +55,15 @@ public class EmployeeTableModel extends AbstractTableModel {
                     return employee.getEmergencyContactNo();
                 }
                 case 5 -> {
+                    //SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+                    //sdf.format(employee.getStartEmploymentDate());
                     return employee.getStartEmploymentDate();
                 }
                 case 6 -> {
                     return employee.getEndEmploymentDate();
+                }
+                default -> {
+                    return null;
                 }
 
             }

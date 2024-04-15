@@ -1,5 +1,9 @@
 package DAL;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -17,14 +21,50 @@ public enum MemoryDB implements IRepository {
 
     MemoryDB() {
         persons = new ArrayList<>();
-        persons.add(new BE_Person(1, "2310902233", "Kasper", "Svensson", "Danmark", "Stenhuggervej 12", "Esbjerg", "6710"));
+        persons.add(new BE_Person(1, "1234567891", "Doroteya", "Jefferys", "Danmark", "Envej 1", "Nærum", "2850"));
+        persons.add(new BE_Person(2, "1234567892", "Lanny", "Twomey", "Danmark", "Enanden vej 1", "Vejby", "3210"));
+        persons.add(new BE_Person(3, "1234567893", "Asher", "Digges", "Danmark", "Envej 1", "Kirke Hyllinge", "4070"));
+        persons.add(new BE_Person(4, "1234567894", "Dunstan", "Tinan", "Danmark", "Envej 1", "Sorø", "4180"));
+        persons.add(new BE_Person(5, "1234567895", "Arney", "Balwin", "Danmark", "Envej 1", "Korsør", "4220"));
+        persons.add(new BE_Person(6, "1234567896", "Branden", "Butlin", "Danmark", "Envej 1", "Ugerløse", "4350"));
+        persons.add(new BE_Person(7, "1234567897", "Adolphus", "Stoute", "Danmark", "Envej 1", "Haslev", "4690"));
+        persons.add(new BE_Person(8, "1234567898", "Jermain", "Ticic", "Danmark", "Envej 1", "Odense SV", "5250"));
+        persons.add(new BE_Person(9, "1234567899", "Napoleon", "Noddles", "Danmark", "Envej 1", "Langeskov", "5550"));
+        persons.add(new BE_Person(10, "1234567810", "Chrissie", "Teare", "Danmark", "Envej 1", "Gelsted", "5591"));
+        persons.add(new BE_Person(11, "1234567811", "Rafa", "Crellim", "Danmark", "Envej 1", "Ebberup", "5631"));
+        persons.add(new BE_Person(12, "1234567812", "Teador", "Rollinshaw", "Danmark", "Envej 1", "Gislev", "5854"));
+        persons.add(new BE_Person(13, "1234567813", "Hort", "Held", "Danmark", "Envej 1", "Viuf", "6052"));
+
 
         departments = new ArrayList<>();
-        BE_Department warehouseDepartment = new BE_Department(1, "Warehouse");
-        departments.add(warehouseDepartment);
+        departments.add(new BE_Department(1, "Warehouse"));
+        departments.add(new BE_Department(2, "Sales"));
+        departments.add(new BE_Department(3, "Human Resources"));
+        departments.add(new BE_Department(4, "Marketing"));
+        departments.add(new BE_Department(5, "Accounting"));
+        departments.add(new BE_Department(6, "IT"));
 
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         employees = new ArrayList<>();
-        employees.add(new BE_Employee(1, "Warehouse Assistant", warehouseDepartment.getId(), new Date(System.currentTimeMillis()), 1));
+        // public BE_Employee(int _id, String _jobTitle, int _departmentId, String _emergencyContactName, String _emergencyContactNo, Date _startEmploymentDate, Date _endEmploymentDate, int personId) {
+        try {
+            employees.add(new BE_Employee(1, "Warehouse Assistant", 1, "Husband, Anders Ager", "12345678", new Date(df.parse("02-03-2020").getTime()), 1));
+            employees.add(new BE_Employee(2, "Account Executive", 2, new Date(System.currentTimeMillis()), 2));
+            employees.add(new BE_Employee(3, "HR Assistant", 3, new Date(df.parse("30-05-2020").getTime()), 3));
+            employees.add(new BE_Employee(4, "Sales Consultant", 2, new Date(df.parse("04-03-2017").getTime()), 4));
+            employees.add(new BE_Employee(5, "Recruiter", 3, new Date(df.parse("15-08-2021").getTime()), 5));
+            employees.add(new BE_Employee(6, "Warehouse Assistant", 1,"Wife, Line Thulm", "12345679", new Date(df.parse("24-09-2022").getTime()), 6));
+            employees.add(new BE_Employee(7, "Warehouse Assistant", 1, new Date(System.currentTimeMillis()), 7));
+            employees.add(new BE_Employee(8, "Director of marketing", 4, new Date(df.parse("12-12-2023").getTime()), 8));
+            employees.add(new BE_Employee(9, "Warehouse Assistant", 1, "Roommate, Nike Slaz", "12345699", new Date(df.parse("01-02-2024").getTime()), new Date(df.parse("01-06-2024").getTime()), 9));
+            employees.add(new BE_Employee(10, "Marketing coordinator", 4, new Date(df.parse("01-11-2019").getTime()), 10));
+            employees.add(new BE_Employee(11, "Accountant", 5, new Date(System.currentTimeMillis()), 11));
+            employees.add(new BE_Employee(12, "CFO", 5, new Date(System.currentTimeMillis()), 12));
+            employees.add(new BE_Employee(13, "IT Director", 6, new Date(df.parse("30-10-2019").getTime()), 13));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override

@@ -5,22 +5,32 @@ import BLL.BLL_Employee;
 import BLL.BLL_Person;
 
 import javax.swing.*;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainView extends JFrame {
 
     BLL_Department bll_department;
     BLL_Employee bll_employee;
     BLL_Person bll_person;
+    JTable table;
 
     public MainView()  {
         bll_department = new BLL_Department();
         bll_employee = new BLL_Employee();
         bll_person = new BLL_Person();
+        table = new JTable();
     }
     public void view() {
         setMenuBar();
@@ -55,13 +65,29 @@ public class MainView extends JFrame {
         fileMenu.add(exitMenuItem);
         menuBar.add(fileMenu);
 
+        JMenu optionsMenu = new JMenu("Options");
+        fileMenu.setMnemonic(KeyEvent.VK_O);
+
+        JCheckBoxMenuItem hideDismissedMenuItem = new JCheckBoxMenuItem("Hide dismissed");
+  /*      hideDismissedMenuItem.addActionListener((event) -> {
+                    TableModel model = table.getModel();
+                    for (int c = 0; c < model.getRowCount(); c++) {
+                        if (model.getValueAt(c, model.getColumnCount()-1) != null)
+                            model.removeRow(c);
+                    }
+                }
+        );*/
+        optionsMenu.add(hideDismissedMenuItem);
+        menuBar.add(optionsMenu);
+
         add(menuBar, BorderLayout.NORTH);
     }
 
     private void setTable() {
         try {
             EmployeeTableModel model = new EmployeeTableModel(bll_employee.getAllEmployeesWithDepartmentAndPerson());
-            JTable table = new JTable();
+            table.setAutoCreateRowSorter(true);
+
             table.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -70,7 +96,9 @@ public class MainView extends JFrame {
                         int row = target.getSelectedRow(); // select a row
                         //int column = target.getSelectedColumn(); // select a column
 
-                        DataView dataView = new DataView(model.getEmployee(row));
+                        int selectedViewRow = target.getRowSorter().convertRowIndexToModel(row);
+
+                        DataView dataView = new DataView(model.getEmployee(selectedViewRow));
                         dataView.setVisible(true);
                     }
                 }

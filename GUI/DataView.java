@@ -13,7 +13,7 @@ public class DataView extends JFrame {
         this.employee = employee;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(800,700); //400 width and 500 height
+        setSize(400,300); //400 width and 500 height
         setTitle(employee.getPerson().toString());
         setLayout(new GridLayout(0,2));
         setPersonData();
@@ -23,6 +23,12 @@ public class DataView extends JFrame {
     private void setEmployeeData() {
         JLabel jLblEmployee = new JLabel("Employee");
 
+        JLabel jLblDepartment = new JLabel("Department");
+        JTextField jTxtDepartment = new JTextField(employee.getDepartment().getName());
+
+        JLabel jLblJobTitle = new JLabel("Job title");
+        JTextField jTxtJobTitle = new JTextField(employee.getJobTitle());
+
         JLabel jLblEmergencyContactName = new JLabel("Emergency contact");
         JTextField jTxtEmergencyContactName = new JTextField(employee.getEmergencyContactName());
 
@@ -30,20 +36,24 @@ public class DataView extends JFrame {
         JTextField jTxtEmergencyContactNo = new JTextField(employee.getEmergencyContactNo());
 
         JLabel jLblStartEmploymentDate = new JLabel("Start date");
-        JTextField jTxtStartEmploymentDate = new JTextField(employee.getStartEmploymentDate() + "");
+        JTextField jTxtStartEmploymentDate = new JTextField(String.valueOf(employee.getStartEmploymentDate()));
 
         JLabel jLblEndEmploymentDate = new JLabel("End date");
-        JTextField jTxtEndEmploymentDate = new JTextField(employee.getEndEmploymentDate() + "");
+        JTextField jTxtEndEmploymentDate = new JTextField(String.valueOf(employee.getEndEmploymentDate()));
 
-        JLabel jLblDepartment = new JLabel("Department");
-        JTextField jTxtDepartment = new JTextField(employee.getDepartment().getName());
-
-        JLabel jLblTitle = new JLabel("Job title");
-        JTextField jTxtTitle = new JTextField(employee.getJobTitle());
-
-        JPanel jPnlEmployee = new JPanel(new GridLayout(5, 1));
+        JPanel jPnlEmployee = new JPanel(new GridLayout(7, 1));
 
         jPnlEmployee.add(jLblEmployee);
+
+        JPanel jPnlDepartment = new JPanel(new FlowLayout());
+        jPnlDepartment.add(jLblDepartment);
+        jPnlDepartment.add(jTxtDepartment);
+        jPnlEmployee.add(jPnlDepartment);
+
+        JPanel jPnlJobTitle = new JPanel(new FlowLayout());
+        jPnlJobTitle.add(jLblJobTitle);
+        jPnlJobTitle.add(jTxtJobTitle);
+        jPnlEmployee.add(jPnlJobTitle);
 
         JPanel jPnlEmergencyContactName = new JPanel(new FlowLayout());
         jPnlEmergencyContactName.add(jLblEmergencyContactName);
@@ -117,13 +127,14 @@ public class DataView extends JFrame {
             }
         });
 
-        JPanel jPnlPerson = new JPanel(new GridLayout(6,1));
+        JPanel jPnlPerson = new JPanel(new GridLayout(7,1));
         JLabel jLblPerson = new JLabel("Person");
         jPnlPerson.add(jLblPerson);
 
         JPanel jPnlCprNo = new JPanel(new FlowLayout());
         jPnlCprNo.add(jLblCprNo);
         jPnlCprNo.add(jTxtCprNo);
+        jPnlPerson.add(jPnlCprNo);
 
         JPanel jPnlFirstName = new JPanel(new FlowLayout());
         jPnlFirstName.add(jLblFirstName);
