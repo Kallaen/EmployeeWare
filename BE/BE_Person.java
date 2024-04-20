@@ -8,16 +8,21 @@ public class BE_Person {
     private String cprNo;
     private String firstName;
     private String lastName;
+    private String phoneNo;
+
+    private String email;
     private String country;
     private String address;
     private String city;
     private String zipCode;
 
-    public BE_Person(int _id, String _cprNo, String _firstName, String _lastName, String _country, String _address, String _city, String _zipCode) {
+    public BE_Person(int _id, String _cprNo, String _firstName, String _lastName, String phoneNo, String email, String _country, String _address, String _city, String _zipCode) {
         this.id = _id;
         this.cprNo = _cprNo;
         this.firstName = _firstName;
         this.lastName = _lastName;
+        this.phoneNo = phoneNo;
+        this.email = email;
         this.country = _country;
         this.address = _address;
         this.city = _city;
@@ -78,6 +83,22 @@ public class BE_Person {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCprNo() {

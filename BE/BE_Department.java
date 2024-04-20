@@ -40,4 +40,9 @@ public class BE_Department {
         return getClass().hashCode();
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

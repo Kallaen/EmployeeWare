@@ -21,19 +21,19 @@ public enum MemoryDB implements IRepository {
 
     MemoryDB() {
         persons = new ArrayList<>();
-        persons.add(new BE_Person(1, "1234567891", "Doroteya", "Jefferys", "Danmark", "Envej 1", "Nærum", "2850"));
-        persons.add(new BE_Person(2, "1234567892", "Lanny", "Twomey", "Danmark", "Enanden vej 1", "Vejby", "3210"));
-        persons.add(new BE_Person(3, "1234567893", "Asher", "Digges", "Danmark", "Envej 1", "Kirke Hyllinge", "4070"));
-        persons.add(new BE_Person(4, "1234567894", "Dunstan", "Tinan", "Danmark", "Envej 1", "Sorø", "4180"));
-        persons.add(new BE_Person(5, "1234567895", "Arney", "Balwin", "Danmark", "Envej 1", "Korsør", "4220"));
-        persons.add(new BE_Person(6, "1234567896", "Branden", "Butlin", "Danmark", "Envej 1", "Ugerløse", "4350"));
-        persons.add(new BE_Person(7, "1234567897", "Adolphus", "Stoute", "Danmark", "Envej 1", "Haslev", "4690"));
-        persons.add(new BE_Person(8, "1234567898", "Jermain", "Ticic", "Danmark", "Envej 1", "Odense SV", "5250"));
-        persons.add(new BE_Person(9, "1234567899", "Napoleon", "Noddles", "Danmark", "Envej 1", "Langeskov", "5550"));
-        persons.add(new BE_Person(10, "1234567810", "Chrissie", "Teare", "Danmark", "Envej 1", "Gelsted", "5591"));
-        persons.add(new BE_Person(11, "1234567811", "Rafa", "Crellim", "Danmark", "Envej 1", "Ebberup", "5631"));
-        persons.add(new BE_Person(12, "1234567812", "Teador", "Rollinshaw", "Danmark", "Envej 1", "Gislev", "5854"));
-        persons.add(new BE_Person(13, "1234567813", "Hort", "Held", "Danmark", "Envej 1", "Viuf", "6052"));
+        persons.add(new BE_Person(1, "1234567891", "Doroteya", "Jefferys", "+4550257839", "test@foodfarms.net", "Danmark", "Envej 1", "Nærum", "2850"));
+        persons.add(new BE_Person(2, "1234567892", "Lanny", "Twomey", "+4591442223", "test1@foodfarms.net", "Danmark", "Enanden vej 1", "Vejby", "3210"));
+        persons.add(new BE_Person(3, "1234567893", "Asher", "Digges","+4579430742", "test2@foodfarms.net", "Danmark", "Envej 1", "Kirke Hyllinge", "4070"));
+        persons.add(new BE_Person(4, "1234567894", "Dunstan", "Tinan", "+4591442223", "test3@foodfarms.net", "Danmark", "Envej 1", "Sorø", "4180"));
+        persons.add(new BE_Person(5, "1234567895", "Arney", "Balwin","+4535665968", "test4@foodfarms.net", "Danmark", "Envej 1", "Korsør", "4220"));
+        persons.add(new BE_Person(6, "1234567896", "Branden", "Butlin","+4550061427", "test5@foodfarms.net", "Danmark", "Envej 1", "Ugerløse", "4350"));
+        persons.add(new BE_Person(7, "1234567897", "Adolphus", "Stoute","+4582704062", "test6@foodfarms.net", "Danmark", "Envej 1", "Haslev", "4690"));
+        persons.add(new BE_Person(8, "1234567898", "Jermain", "Ticic","+4534245368", "test7@foodfarms.net", "Danmark", "Envej 1", "Odense SV", "5250"));
+        persons.add(new BE_Person(9, "1234567899", "Napoleon", "Noddles","+4555492128", "test8@foodfarms.net", "Danmark", "Envej 1", "Langeskov", "5550"));
+        persons.add(new BE_Person(10, "1234567810", "Chrissie", "Teare","+4562759748", "test9@foodfarms.net", "Danmark", "Envej 1", "Gelsted", "5591"));
+        persons.add(new BE_Person(11, "1234567811", "Rafa", "Crellim","+4559285827", "test10@foodfarms.net", "Danmark", "Envej 1", "Ebberup", "5631"));
+        persons.add(new BE_Person(12, "1234567812", "Teador", "Rollinshaw","+4579430742", "test11@foodfarms.net", "Danmark", "Envej 1", "Gislev", "5854"));
+        persons.add(new BE_Person(13, "1234567813", "Hort", "Held", "Danmark","+4591442223", "test12@foodfarms.net", "Envej 1", "Viuf", "6052"));
 
 
         departments = new ArrayList<>();
@@ -155,7 +155,7 @@ public enum MemoryDB implements IRepository {
     @Override
     public BE_Person addPerson(BE_Person person) {
         persons.sort(Comparator.comparing(BE_Person::getId));
-        return new BE_Person(persons.get(persons.size()-1).getId()+1, person.getCprNo(), person.getFirstName(), person.getLastName(), person.getCountry(), person.getAddress(), person.getCity(), person.getZipCode());
+        return new BE_Person(persons.get(persons.size()-1).getId()+1, person.getCprNo(), person.getFirstName(), person.getLastName(), person.getPhoneNo(), person.getEmail(), person.getCountry(), person.getAddress(), person.getCity(), person.getZipCode());
     }
 
     @Override

@@ -33,6 +33,8 @@ public class MainView extends JFrame {
         table = new JTable();
     }
     public void view() {
+        setTitle("EmployeeWare");
+
         setMenuBar();
         setTable();
 
@@ -108,6 +110,7 @@ public class MainView extends JFrame {
             table.setModel(model);
             add(sp);
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }

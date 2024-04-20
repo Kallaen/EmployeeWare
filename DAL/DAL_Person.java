@@ -20,12 +20,14 @@ public class DAL_Person {
                 String cprNo = rs.getString("cprNo");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
+                String phoneNo = rs.getString("phoneNo");
+                String email = rs.getString("email");
                 String country = rs.getString("country");
                 String address = rs.getString("address");
                 String city = rs.getString("city");
                 String zipCode = rs.getString("zipCode");
 
-                BE_Person person = new BE_Person(id, cprNo, firstName, lastName, country, address, city, zipCode);
+                BE_Person person = new BE_Person(id, cprNo, firstName, lastName, phoneNo, email, country, address, city, zipCode);
                 arr.add(person);
             }
             return arr;
@@ -43,12 +45,14 @@ public class DAL_Person {
                 String cprNo = rs.getString("cprNo");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
+                String phoneNo = rs.getString("phoneNo");
+                String email = rs.getString("email");
                 String country = rs.getString("country");
                 String address = rs.getString("address");
                 String city = rs.getString("city");
                 String zipCode = rs.getString("zipCode");
 
-                return new BE_Person(id, cprNo, firstName, lastName, country, address, city, zipCode);
+                return new BE_Person(id, cprNo, firstName, lastName, phoneNo, email, country, address, city, zipCode);
             }
             return new BE_Person();
         } catch (SQLException e) {
@@ -67,12 +71,14 @@ public class DAL_Person {
                 String cprNo = rs.getString("cprNo");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
+                String phoneNo = rs.getString("phoneNo");
+                String email = rs.getString("email");
                 String country = rs.getString("country");
                 String address = rs.getString("address");
                 String city = rs.getString("city");
                 String zipCode = rs.getString("zipCode");
 
-                BE_Person person = new BE_Person(id, cprNo, firstName, lastName, country, address, city, zipCode);
+                BE_Person person = new BE_Person(id, cprNo, firstName, lastName, phoneNo, email, country, address, city, zipCode);
                 arr.add(person);
             }
             return arr;
@@ -82,15 +88,17 @@ public class DAL_Person {
     }
 
     public BE_Person add(BE_Person person) throws SQLException {
-        String sqlInsert = "INSERT INTO Person (cprNo, firstName, lastName, country, address, city, zipCode) VALUES (?,?,?,?,?,?,?);";
+        String sqlInsert = "INSERT INTO Person (cprNo, firstName, lastName, phoneNo, email, country, address, city, zipCode) VALUES (?,?,?,?,?,?,?,?,?);";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, person.getCprNo());
             stmt.setString(2, person.getFirstName());
             stmt.setString(3, person.getLastName());
-            stmt.setString(4, person.getCountry());
-            stmt.setString(5, person.getAddress());
-            stmt.setString(6, person.getCity());
-            stmt.setString(7, person.getZipCode());
+            stmt.setString(4, person.getPhoneNo());
+            stmt.setString(5, person.getEmail());
+            stmt.setString(6, person.getCountry());
+            stmt.setString(7, person.getAddress());
+            stmt.setString(8, person.getCity());
+            stmt.setString(9, person.getZipCode());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
@@ -112,15 +120,17 @@ public class DAL_Person {
     }
 
     public BE_Person update(BE_Person person) throws SQLException {
-        String sqlUpdate = "UPDATE Person SET cprNo = ?, firstName = ?, lastName = ?, country = ?, address = ?, city = ?, zipCode = ? WHERE id = ?;";
+        String sqlUpdate = "UPDATE Person SET cprNo = ?, firstName = ?, lastName = ?, phoneNo = ?, email = ?, country = ?, address = ?, city = ?, zipCode = ? WHERE id = ?;";
         try (PreparedStatement stmt = Repository.INSTANCE.getConnection().prepareStatement(sqlUpdate)) {
             stmt.setString(1, person.getCprNo());
             stmt.setString(2, person.getFirstName());
             stmt.setString(3, person.getLastName());
-            stmt.setString(4, person.getCountry());
-            stmt.setString(5, person.getAddress());
-            stmt.setString(6, person.getCity());
-            stmt.setString(7, person.getZipCode());
+            stmt.setString(4, person.getPhoneNo());
+            stmt.setString(5, person.getEmail());
+            stmt.setString(6, person.getCountry());
+            stmt.setString(7, person.getAddress());
+            stmt.setString(8, person.getCity());
+            stmt.setString(9, person.getZipCode());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
