@@ -1,5 +1,6 @@
 package GUI;
 
+import BE.BE_Department;
 import BE.BE_Employee;
 import BE.BE_Person;
 import BLL.BLL_Department;
@@ -12,10 +13,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DataView extends JFrame {
+
     BLL_Department bll_department;
     BLL_Employee bll_employee;
     BLL_Person bll_person;
+
     private final BE_Employee employee;
+
     public DataView(BE_Employee employee) {
         this.employee = employee;
 
@@ -36,36 +40,38 @@ public class DataView extends JFrame {
             JPanel jPnlEmployee = new JPanel(new GridBagLayout());
             jPnlEmployee.setBorder(BorderFactory.createTitledBorder("Employee"));
 
+            ArrayList<Object> components = new ArrayList<>();
+
             JLabel jLblDepartment = new JLabel("Department");
             JComboBox<Object> jCBXDepartment = new JComboBox<>(bll_department.getAllDepartments().toArray());
             jCBXDepartment.setSelectedItem(employee.getDepartment());
-            jCBXDepartment.addActionListener(actionEvent -> {
-                /*String data = "Programming language Selected: "
-                        + cb.getItemAt(cb.getSelectedIndex());
-                label.setText(data);*/
-            });
             jCBXDepartment.setEnabled(false);
+            components.add(jCBXDepartment);
 
             JLabel jLblJobTitle = new JLabel("Job title");
             JTextField jTxtJobTitle = new JTextField(employee.getJobTitle());
             jTxtJobTitle.setEditable(false);
-
+            components.add(jTxtJobTitle);
 
             JLabel jLblEmergencyContactName = new JLabel("Emergency contact");
             JTextField jTxtEmergencyContactName = new JTextField(employee.getEmergencyContactName());
             jTxtEmergencyContactName.setEditable(false);
+            components.add(jTxtEmergencyContactName);
 
             JLabel jLblEmergencyContactNo = new JLabel("Emergency contact number");
             JTextField jTxtEmergencyContactNo = new JTextField(employee.getEmergencyContactNo());
             jTxtEmergencyContactNo.setEditable(false);
+            components.add(jTxtEmergencyContactNo);
 
             JLabel jLblStartEmploymentDate = new JLabel("Start date");
             JTextField jTxtStartEmploymentDate = new JTextField(String.valueOf(employee.getStartEmploymentDate() == null ? "" : employee.getStartEmploymentDate()));
             jTxtStartEmploymentDate.setEditable(false);
+            components.add(jTxtStartEmploymentDate);
 
             JLabel jLblEndEmploymentDate = new JLabel("End date");
             JTextField jTxtEndEmploymentDate = new JTextField(String.valueOf(employee.getEndEmploymentDate() == null ? "" : employee.getEndEmploymentDate()));
             jTxtEndEmploymentDate.setEditable(false);
+            components.add(jTxtEndEmploymentDate);
 
             JButton jBtnEdit = new JButton("Edit");
             JButton jBtnSave = new JButton("Save");
@@ -93,26 +99,39 @@ public class DataView extends JFrame {
             jPnlButtons.add(jBtnSave);
             jPnlEmployee.add(jPnlButtons, createGbc(0, 6));
 
-            jBtnSave.setVisible(false);
-            jBtnSave.addActionListener(actionEvent -> {
-                int res = JOptionPane.showConfirmDialog(null, "Do you really want to SAVE?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (res == 0) {
-                    setEditableOfPanelJTextFields(jPnlEmployee, false);
-                    jCBXDepartment.setEnabled(false);
-
-                    jBtnEdit.setVisible(true);
-                    jBtnSave.setVisible(false);
-                }
-            });
             jBtnEdit.addActionListener(actionEvent -> {
                 int res = JOptionPane.showConfirmDialog(null, "Do you really want to edit?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (res == 0) {
-                    setEditableOfPanelJTextFields(jPnlEmployee, true);
-                    jCBXDepartment.setEnabled(true);
+                    setEditableOfJComponents(components, true);
 
                     jBtnSave.setVisible(true);
                     jBtnEdit.setVisible(false);
                 }
+            });
+
+            ArrayList<String> textFieldsCheckArr = getTextOfJComponents(components);
+
+            jBtnSave.setVisible(false);
+            jBtnSave.addActionListener(actionEvent -> {
+                BE_Department cbxData = (BE_Department) jCBXDepartment.getItemAt(jCBXDepartment.getSelectedIndex());
+                var textFieldChangesArr = getTextOfJComponents(components);
+                if (!textFieldsCheckArr.equals(textFieldChangesArr) || cbxData.getName() != employee.getDepartment().getName()) {
+                    int res = JOptionPane.showConfirmDialog(null, "Do you really want to SAVE?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (res == 0) {
+                        employee.setDepartment(cbxData);
+                        employee.setDepartmentId(cbxData.getId());
+                        employee.setJobTitle(jTxtJobTitle.getText());
+                        employee.setEmergencyContactName(jTxtEmergencyContactName.getText());
+                        employee.setEmergencyContactNo(jTxtEmergencyContactNo.getText());
+                        //employee.setStartEmploymentDate(jTxtStartEmploymentDate.getText());
+                        //employee.setEndEmploymentDate(jTxtEndEmploymentDate.getText());
+                    }
+                }
+
+                setEditableOfJComponents(components, false);
+
+                jBtnEdit.setVisible(true);
+                jBtnSave.setVisible(false);
             });
 
             add(jPnlEmployee);
@@ -125,42 +144,52 @@ public class DataView extends JFrame {
         BE_Person person = employee.getPerson();
         JPanel jPnlPerson = new JPanel(new GridBagLayout());
         jPnlPerson.setBorder(BorderFactory.createTitledBorder("Person"));
+        ArrayList<Object> components = new ArrayList<>();
 
         JLabel jLblCprNo = new JLabel("CPR number");
         JTextField jTxtCprNo = new JTextField(person.getCprNo());
         jTxtCprNo.setEditable(false);
+        components.add(jTxtCprNo);
 
         JLabel jLblFirstName = new JLabel("First name:");
         JTextField jTxtFirstName = new JTextField(person.getFirstName());
         jTxtFirstName.setEditable(false);
+        components.add(jTxtFirstName);
 
         JLabel jLblLastName = new JLabel("Last name:");
         JTextField jTxtLastName = new JTextField(person.getLastName());
         jTxtLastName.setEditable(false);
+        components.add(jTxtLastName);
 
         JLabel jLblPhoneNo = new JLabel("Phone number:");
         JTextField jTxtPhoneNo = new JTextField(person.getPhoneNo());
         jTxtPhoneNo.setEditable(false);
+        components.add(jTxtPhoneNo);
 
         JLabel jLblEmail = new JLabel("Email:");
         JTextField jTxtEmail = new JTextField(person.getEmail());
         jTxtEmail.setEditable(false);
+        components.add(jTxtEmail);
 
         JLabel jLblCountry = new JLabel("Country:");
         JTextField jTxtCountry = new JTextField(person.getCountry());
         jTxtCountry.setEditable(false);
+        components.add(jTxtCountry);
 
         JLabel jLblAddress = new JLabel("Address:");
         JTextField jTxtAddress = new JTextField(person.getAddress());
         jTxtAddress.setEditable(false);
+        components.add(jTxtAddress);
 
         JLabel jLblCity = new JLabel("City:");
         JTextField jTxtCity = new JTextField(person.getCity());
         jTxtCity.setEditable(false);
+        components.add(jTxtCity);
 
         JLabel jLblZipCode = new JLabel("Zip code:");
         JTextField jTxtZipCode = new JTextField(person.getZipCode());
         jTxtZipCode.setEditable(false);
+        components.add(jTxtZipCode);
 
         JButton jBtnEdit = new JButton("Edit");
         JButton jBtnSave = new JButton("Save");
@@ -199,7 +228,7 @@ public class DataView extends JFrame {
         jBtnEdit.addActionListener(actionEvent -> {
             int res = JOptionPane.showConfirmDialog(null, "Do you really want to edit?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (res == 0) {
-                setEditableOfPanelJTextFields(jPnlPerson, true);
+                setEditableOfJComponents(components, true);
 
                 jBtnSave.setVisible(true);
                 jBtnCancel.setVisible(true);
@@ -207,11 +236,11 @@ public class DataView extends JFrame {
             }
         });
 
-        ArrayList<String> textFieldsCheckArr = getTextOfPanelJTextFields(jPnlPerson);
+        ArrayList<String> textFieldsCheckArr = getTextOfJComponents(components);
 
         jBtnSave.setVisible(false);
         jBtnSave.addActionListener(actionEvent -> {
-            var textFieldChangesArr = getTextOfPanelJTextFields(jPnlPerson);
+            var textFieldChangesArr = getTextOfJComponents(components);
             if (!textFieldsCheckArr.equals(textFieldChangesArr)) {
                 textFieldChangesArr.removeAll(textFieldsCheckArr);
                 String followingTextChanged = "";
@@ -221,7 +250,7 @@ public class DataView extends JFrame {
 
 
             }
-            setEditableOfPanelJTextFields(jPnlPerson, false);
+            setEditableOfJComponents(components, false);
 
             jBtnEdit.setVisible(true);
             jBtnSave.setVisible(false);
@@ -244,20 +273,23 @@ public class DataView extends JFrame {
         return gbc;
     }
 
-    private static void setEditableOfPanelJTextFields(Container container, boolean editable) {
-        for (Component component : container.getComponents()) {
-            if (component instanceof JTextField) {
-                ((JTextField) component).setEditable(editable);
-            }
+    private static void setEditableOfJComponents(ArrayList<Object> components, boolean editable) {
+        for (Object o : components) {
+            if (o instanceof JTextField)
+                ((JTextField) o).setEditable(editable);
+            if (o instanceof JComboBox)
+                ((JComboBox) o).setEnabled(editable);
         }
     }
 
-    private static ArrayList<String> getTextOfPanelJTextFields(Container container) {
+    private static ArrayList<String> getTextOfJComponents(ArrayList<Object> components) {
         ArrayList<String> texts = new ArrayList<>();
-        for (Component component : container.getComponents()) {
-            if (component instanceof JTextField) {
-                texts.add(((JTextField) component).getText());
-            }
+        for (Object o : components) {
+            if (o instanceof JTextField)
+                texts.add(((JTextField) o).getText());
+            if (o instanceof JComboBox)
+                texts.add(((JComboBox) o).getSelectedItem().toString());
+
         }
         return texts;
     }

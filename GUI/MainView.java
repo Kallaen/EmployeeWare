@@ -39,7 +39,7 @@ public class MainView extends JFrame {
         setTable();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800,700); //400 width and 500 height
+        setSize(800,700);
         setVisible(true);
     }
 
