@@ -57,6 +57,9 @@ public class MainView extends JFrame {
         JMenuItem searchMenuItem = new JMenuItem("Search");
         exitMenuItem.setMnemonic(KeyEvent.VK_E);
         exitMenuItem.setToolTipText("Search...");
+        exitMenuItem.addActionListener((event) -> {
+
+        });
 
         JMenuItem departmentMenu = new JMenuItem("Department");
         departmentMenu.addActionListener((event) -> new DepartmentView().setVisible(true));
@@ -71,18 +74,35 @@ public class MainView extends JFrame {
         fileMenu.setMnemonic(KeyEvent.VK_O);
 
         JCheckBoxMenuItem hideDismissedMenuItem = new JCheckBoxMenuItem("Hide dismissed");
-  /*      hideDismissedMenuItem.addActionListener((event) -> {
-                    TableModel model = table.getModel();
-                    for (int c = 0; c < model.getRowCount(); c++) {
-                        if (model.getValueAt(c, model.getColumnCount()-1) != null)
-                            model.removeRow(c);
-                    }
-                }
-        );*/
+        hideDismissedMenuItem.addActionListener((event) -> {
+            if (hideDismissedMenuItem.getState()) {
+                TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(((EmployeeTableModel) table.getModel()));
+                sorter.setRowFilter(getRowFilter());
+
+                table.setRowSorter(sorter);
+            } else {
+                table.setRowSorter(null);
+            }
+        });
         optionsMenu.add(hideDismissedMenuItem);
         menuBar.add(optionsMenu);
 
         add(menuBar, BorderLayout.NORTH);
+    }
+
+    private RowFilter<TableModel, Integer> getRowFilter() {
+        return new RowFilter<TableModel, Integer>() {
+            @Override
+            public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+                int modelRow = entry.getIdentifier();
+                var model = (EmployeeTableModel) table.getModel();
+                int colIdx = 0;
+                for (int i = 0; i < model.getColumnCount(); i++)
+                    if (model.getColumns()[i].equalsIgnoreCase("End Employment Date"))
+                        colIdx = i;
+                return entry.getModel().getValueAt(modelRow, colIdx) == null;
+            }
+        };
     }
 
     private void setTable() {
@@ -100,7 +120,7 @@ public class MainView extends JFrame {
 
                         int selectedViewRow = target.getRowSorter().convertRowIndexToModel(row);
 
-                        DataView dataView = new DataView(model.getEmployee(selectedViewRow));
+                        DataView dataView = new DataView(table, model.getEmployee(selectedViewRow));
                         dataView.setVisible(true);
                     }
                 }

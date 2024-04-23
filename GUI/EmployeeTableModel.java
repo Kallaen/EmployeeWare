@@ -33,6 +33,10 @@ public class EmployeeTableModel extends AbstractTableModel {
         return columns[columnIndex];
     }
 
+    public String[] getColumns() {
+        return columns;
+    }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         BE_Employee employee = getEmployee(rowIndex);

@@ -9,6 +9,7 @@ import BLL.BLL_Person;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -17,15 +18,18 @@ public class DataView extends JFrame {
     BLL_Department bll_department;
     BLL_Employee bll_employee;
     BLL_Person bll_person;
+    JTable mainTable;
 
     private final BE_Employee employee;
 
-    public DataView(BE_Employee employee) {
+    public DataView(JTable table, BE_Employee employee) {
         this.employee = employee;
 
         bll_department = new BLL_Department();
         bll_employee = new BLL_Employee();
         bll_person = new BLL_Person();
+
+        mainTable = table;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800,400);
@@ -123,8 +127,16 @@ public class DataView extends JFrame {
                         employee.setJobTitle(jTxtJobTitle.getText());
                         employee.setEmergencyContactName(jTxtEmergencyContactName.getText());
                         employee.setEmergencyContactNo(jTxtEmergencyContactNo.getText());
-                        //employee.setStartEmploymentDate(jTxtStartEmploymentDate.getText());
-                        //employee.setEndEmploymentDate(jTxtEndEmploymentDate.getText());
+                        employee.setStartEmploymentDate(!jTxtEndEmploymentDate.getText().equals("") ? Date.valueOf(jTxtStartEmploymentDate.getText()) : null);
+                        employee.setEndEmploymentDate(!jTxtEndEmploymentDate.getText().equals("") ? Date.valueOf(jTxtEndEmploymentDate.getText()) : null);
+
+                        try {
+                            bll_employee.updateEmployee(employee);
+                            mainTable.updateUI();
+                        } catch (SQLException e) {
+                            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
 
@@ -144,6 +156,7 @@ public class DataView extends JFrame {
         BE_Person person = employee.getPerson();
         JPanel jPnlPerson = new JPanel(new GridBagLayout());
         jPnlPerson.setBorder(BorderFactory.createTitledBorder("Person"));
+
         ArrayList<Object> components = new ArrayList<>();
 
         JLabel jLblCprNo = new JLabel("CPR number");
@@ -242,11 +255,27 @@ public class DataView extends JFrame {
         jBtnSave.addActionListener(actionEvent -> {
             var textFieldChangesArr = getTextOfJComponents(components);
             if (!textFieldsCheckArr.equals(textFieldChangesArr)) {
-                textFieldChangesArr.removeAll(textFieldsCheckArr);
-                String followingTextChanged = "";
 
                 int res = JOptionPane.showConfirmDialog(null, "Do you really want to SAVE?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                //if (res == 0)
+                if (res == 0) {
+                    person.setCprNo(jTxtCprNo.getText());
+                    person.setFirstName(jTxtFirstName.getText());
+                    person.setLastName(jTxtLastName.getText());
+                    person.setPhoneNo(jTxtPhoneNo.getText());
+                    person.setEmail(jTxtEmail.getText());
+                    person.setCountry(jTxtCountry.getText());
+                    person.setAddress(jTxtAddress.getText());
+                    person.setCity(jTxtCity.getText());
+                    person.setZipCode(jTxtZipCode.getText());
+
+                    try {
+                        bll_person.updatePerson(person);
+                        mainTable.updateUI();
+                    } catch (SQLException e) {
+                        JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException(e);
+                    }
+                }
 
 
             }
