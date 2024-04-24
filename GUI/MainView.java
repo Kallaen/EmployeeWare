@@ -55,10 +55,10 @@ public class MainView extends JFrame {
         exitMenuItem.addActionListener((event) -> System.exit(0));
 
         JMenuItem searchMenuItem = new JMenuItem("Search");
-        exitMenuItem.setMnemonic(KeyEvent.VK_E);
-        exitMenuItem.setToolTipText("Search...");
-        exitMenuItem.addActionListener((event) -> {
-
+        searchMenuItem.setMnemonic(KeyEvent.VK_E);
+        searchMenuItem.setToolTipText("Search...");
+        searchMenuItem.addActionListener((event) -> {
+            // TODO: Search functionality - new pop-up window OR in button of table
         });
 
         JMenuItem departmentMenu = new JMenuItem("Department");
@@ -81,7 +81,7 @@ public class MainView extends JFrame {
 
                 table.setRowSorter(sorter);
             } else {
-                table.setRowSorter(null);
+                table.setAutoCreateRowSorter(true);
             }
         });
         optionsMenu.add(hideDismissedMenuItem);
