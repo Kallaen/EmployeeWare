@@ -19,6 +19,7 @@ public class DataView extends JFrame {
     BLL_Employee bll_employee;
     BLL_Person bll_person;
     JTable mainTable;
+    MyGridBagConstraints gridBagConstraints;
 
     private final BE_Employee employee;
 
@@ -28,6 +29,7 @@ public class DataView extends JFrame {
         bll_department = new BLL_Department();
         bll_employee = new BLL_Employee();
         bll_person = new BLL_Person();
+        gridBagConstraints = new MyGridBagConstraints();
 
         mainTable = table;
 
@@ -80,28 +82,28 @@ public class DataView extends JFrame {
             JButton jBtnEdit = new JButton("Edit");
             JButton jBtnSave = new JButton("Save");
 
-            jPnlEmployee.add(jLblDepartment, createGbc(0,0));
-            jPnlEmployee.add(jCBXDepartment, createGbc(1,0));
+            jPnlEmployee.add(jLblDepartment, gridBagConstraints.createGbc(0,0));
+            jPnlEmployee.add(jCBXDepartment, gridBagConstraints.createGbc(1,0));
 
-            jPnlEmployee.add(jLblJobTitle, createGbc(0,1));
-            jPnlEmployee.add(jTxtJobTitle, createGbc(1,1));
+            jPnlEmployee.add(jLblJobTitle, gridBagConstraints.createGbc(0,1));
+            jPnlEmployee.add(jTxtJobTitle, gridBagConstraints.createGbc(1,1));
 
-            jPnlEmployee.add(jLblEmergencyContactName, createGbc(0,2));
-            jPnlEmployee.add(jTxtEmergencyContactName, createGbc(1,2));
+            jPnlEmployee.add(jLblEmergencyContactName, gridBagConstraints.createGbc(0,2));
+            jPnlEmployee.add(jTxtEmergencyContactName, gridBagConstraints.createGbc(1,2));
 
-            jPnlEmployee.add(jLblEmergencyContactNo, createGbc(0,3));
-            jPnlEmployee.add(jTxtEmergencyContactNo, createGbc(1,3));
+            jPnlEmployee.add(jLblEmergencyContactNo, gridBagConstraints.createGbc(0,3));
+            jPnlEmployee.add(jTxtEmergencyContactNo, gridBagConstraints.createGbc(1,3));
 
-            jPnlEmployee.add(jLblStartEmploymentDate, createGbc(0,4));
-            jPnlEmployee.add(jTxtStartEmploymentDate, createGbc(1,4));
+            jPnlEmployee.add(jLblStartEmploymentDate, gridBagConstraints.createGbc(0,4));
+            jPnlEmployee.add(jTxtStartEmploymentDate, gridBagConstraints.createGbc(1,4));
 
-            jPnlEmployee.add(jLblEndEmploymentDate, createGbc(0,5));
-            jPnlEmployee.add(jTxtEndEmploymentDate, createGbc(1,5));
+            jPnlEmployee.add(jLblEndEmploymentDate, gridBagConstraints.createGbc(0,5));
+            jPnlEmployee.add(jTxtEndEmploymentDate, gridBagConstraints.createGbc(1,5));
 
             JPanel jPnlButtons = new JPanel(new FlowLayout());
             jPnlButtons.add(jBtnEdit);
             jPnlButtons.add(jBtnSave);
-            jPnlEmployee.add(jPnlButtons, createGbc(0, 6));
+            jPnlEmployee.add(jPnlButtons, gridBagConstraints.createGbc(0, 6));
 
             jBtnEdit.addActionListener(actionEvent -> {
                 int res = JOptionPane.showConfirmDialog(null, "Do you really want to edit?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -208,35 +210,35 @@ public class DataView extends JFrame {
         JButton jBtnSave = new JButton("Save");
         JButton jBtnCancel = new JButton("Cancel");
 
-        jPnlPerson.add(jLblCprNo, createGbc(0,0));
-        jPnlPerson.add(jTxtCprNo, createGbc(1,0));
+        jPnlPerson.add(jLblCprNo, gridBagConstraints.createGbc(0,0));
+        jPnlPerson.add(jTxtCprNo, gridBagConstraints.createGbc(1,0));
 
-        jPnlPerson.add(jLblFirstName, createGbc(0,1));
-        jPnlPerson.add(jTxtFirstName, createGbc(1,1));
-        jPnlPerson.add(jLblLastName, createGbc(0,2));
-        jPnlPerson.add(jTxtLastName, createGbc(1,2));
+        jPnlPerson.add(jLblFirstName, gridBagConstraints.createGbc(0,1));
+        jPnlPerson.add(jTxtFirstName, gridBagConstraints.createGbc(1,1));
+        jPnlPerson.add(jLblLastName, gridBagConstraints.createGbc(0,2));
+        jPnlPerson.add(jTxtLastName, gridBagConstraints.createGbc(1,2));
 
-        jPnlPerson.add(jLblPhoneNo, createGbc(0,3));
-        jPnlPerson.add(jTxtPhoneNo, createGbc(1,3));
+        jPnlPerson.add(jLblPhoneNo, gridBagConstraints.createGbc(0,3));
+        jPnlPerson.add(jTxtPhoneNo, gridBagConstraints.createGbc(1,3));
 
-        jPnlPerson.add(jLblEmail, createGbc(0,4));
-        jPnlPerson.add(jTxtEmail, createGbc(1,4));
+        jPnlPerson.add(jLblEmail, gridBagConstraints.createGbc(0,4));
+        jPnlPerson.add(jTxtEmail, gridBagConstraints.createGbc(1,4));
 
-        jPnlPerson.add(jLblCountry, createGbc(0,5));
-        jPnlPerson.add(jTxtCountry, createGbc(1,5));
-        jPnlPerson.add(jLblAddress, createGbc(0,6));
-        jPnlPerson.add(jTxtAddress, createGbc(1,6));
+        jPnlPerson.add(jLblCountry, gridBagConstraints.createGbc(0,5));
+        jPnlPerson.add(jTxtCountry, gridBagConstraints.createGbc(1,5));
+        jPnlPerson.add(jLblAddress, gridBagConstraints.createGbc(0,6));
+        jPnlPerson.add(jTxtAddress, gridBagConstraints.createGbc(1,6));
 
-        jPnlPerson.add(jLblCity, createGbc(0,7));
-        jPnlPerson.add(jTxtCity, createGbc(1,7));
-        jPnlPerson.add(jLblZipCode, createGbc(0,8));
-        jPnlPerson.add(jTxtZipCode, createGbc(1,8));
+        jPnlPerson.add(jLblCity, gridBagConstraints.createGbc(0,7));
+        jPnlPerson.add(jTxtCity, gridBagConstraints.createGbc(1,7));
+        jPnlPerson.add(jLblZipCode, gridBagConstraints.createGbc(0,8));
+        jPnlPerson.add(jTxtZipCode, gridBagConstraints.createGbc(1,8));
 
         JPanel jPnlButtons = new JPanel(new FlowLayout());
         jPnlButtons.add(jBtnEdit);
         jPnlButtons.add(jBtnSave);
         jPnlButtons.add(jBtnCancel);
-        jPnlPerson.add(jPnlButtons, createGbc(0, 10));
+        jPnlPerson.add(jPnlButtons, gridBagConstraints.createGbc(0, 10));
 
         jBtnEdit.addActionListener(actionEvent -> {
             int res = JOptionPane.showConfirmDialog(null, "Do you really want to edit?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -288,18 +290,6 @@ public class DataView extends JFrame {
         jBtnCancel.setVisible(false);
 
         add(jPnlPerson);
-    }
-
-    private static GridBagConstraints createGbc(int x, int y) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = x;
-        gbc.gridy = y;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        int gap = 3;
-        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.weighty = 0.5;
-        return gbc;
     }
 
     private static void setEditableOfJComponents(ArrayList<Object> components, boolean editable) {
