@@ -5,16 +5,20 @@ import BLL.BLL_Employee;
 import BLL.BLL_Person;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.RowSorterEvent;
 import javax.swing.event.RowSorterListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,24 +58,24 @@ public class MainView extends JFrame {
         exitMenuItem.setToolTipText("Exit application");
         exitMenuItem.addActionListener((event) -> System.exit(0));
 
-        JMenuItem searchMenuItem = new JMenuItem("Search");
-        searchMenuItem.setMnemonic(KeyEvent.VK_E);
-        searchMenuItem.setToolTipText("Search...");
-        searchMenuItem.addActionListener((event) -> {
-            // TODO: Search functionality - new pop-up window OR in button of table
-        });
-
         JMenuItem departmentMenu = new JMenuItem("Department");
-        departmentMenu.addActionListener((event) -> new DepartmentView().setVisible(true));
+        departmentMenu.addActionListener((event) -> new DepartmentView(table).setVisible(true));
 
-        fileMenu.add(searchMenuItem);
-        fileMenu.add(departmentMenu);
-        fileMenu.addSeparator();
-        fileMenu.add(exitMenuItem);
-        menuBar.add(fileMenu);
+        JTextField jTxtFieldSearch = new JTextField("Search ...");
+        jTxtFieldSearch.setMaximumSize(new Dimension((int) jTxtFieldSearch.getPreferredSize().getWidth() + 250, (int) jTxtFieldSearch.getPreferredSize().getHeight()));
+        jTxtFieldSearch.setPreferredSize(new Dimension((int) jTxtFieldSearch.getPreferredSize().getWidth() + 250, (int) jTxtFieldSearch.getPreferredSize().getHeight()));
+        jTxtFieldSearch.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (jTxtFieldSearch.getText().toLowerCase().contains("search"))
+                    jTxtFieldSearch.setText("");
+            }
+        });
+        ((AbstractDocument) jTxtFieldSearch.getDocument()).setDocumentFilter(myDocumentFilter());
+
 
         JMenu optionsMenu = new JMenu("Options");
-        fileMenu.setMnemonic(KeyEvent.VK_O);
+        optionsMenu.setMnemonic(KeyEvent.VK_O);
 
         JCheckBoxMenuItem hideDismissedMenuItem = new JCheckBoxMenuItem("Hide dismissed");
         hideDismissedMenuItem.addActionListener((event) -> {
@@ -84,8 +88,19 @@ public class MainView extends JFrame {
                 table.setAutoCreateRowSorter(true);
             }
         });
+
+        fileMenu.add(departmentMenu);
+        fileMenu.addSeparator();
+        fileMenu.add(exitMenuItem);
+
+        menuBar.add(fileMenu);
+
         optionsMenu.add(hideDismissedMenuItem);
         menuBar.add(optionsMenu);
+
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(jTxtFieldSearch);
+
 
         add(menuBar, BorderLayout.NORTH);
     }
@@ -101,6 +116,47 @@ public class MainView extends JFrame {
                     if (model.getColumns()[i].equalsIgnoreCase("End Employment Date"))
                         colIdx = i;
                 return entry.getModel().getValueAt(modelRow, colIdx) == null;
+            }
+        };
+    }
+
+    private DocumentFilter myDocumentFilter() {
+        return new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+                super.insertString(fb, offset, text, attr);
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (fb.getDocument().getText(0, fb.getDocument().getLength()).toLowerCase().contains("search")) {
+                    fb.getDocument().remove(0, fb.getDocument().getLength());
+                }
+                System.out.println(text);
+                if (fb.getDocument().getLength() >= 2) {
+                    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(((EmployeeTableModel) table.getModel()));
+                    String textToFilter = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
+                    System.out.println(fb.getDocument().getText(0, fb.getDocument().getLength()) + text);
+
+                    sorter.setRowFilter(RowFilter.regexFilter(textToFilter, 0));
+
+                    table.setRowSorter(sorter);
+                } else {
+                    table.setAutoCreateRowSorter(true);
+                }
+
+                super.replace(fb, offset, length, text, attrs);
+            }
+
+            @Override
+            public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+                System.out.println("remove");
+                System.out.println("offset: " + offset);
+                System.out.println("length: " + length);
+                if (length < 2) {
+                    table.setAutoCreateRowSorter(true);
+                }
+                super.remove(fb, offset, length);
             }
         };
     }

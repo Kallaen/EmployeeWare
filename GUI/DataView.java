@@ -8,10 +8,12 @@ import BLL.BLL_Employee;
 import BLL.BLL_Person;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DataView extends JFrame {
 
@@ -129,12 +131,12 @@ public class DataView extends JFrame {
                         employee.setJobTitle(jTxtJobTitle.getText());
                         employee.setEmergencyContactName(jTxtEmergencyContactName.getText());
                         employee.setEmergencyContactNo(jTxtEmergencyContactNo.getText());
-                        employee.setStartEmploymentDate(!jTxtEndEmploymentDate.getText().equals("") ? Date.valueOf(jTxtStartEmploymentDate.getText()) : null);
+                        employee.setStartEmploymentDate(!jTxtStartEmploymentDate.getText().equals("") ? Date.valueOf(jTxtStartEmploymentDate.getText()) : null);
                         employee.setEndEmploymentDate(!jTxtEndEmploymentDate.getText().equals("") ? Date.valueOf(jTxtEndEmploymentDate.getText()) : null);
 
                         try {
                             bll_employee.updateEmployee(employee);
-                            mainTable.updateUI();
+                            ((AbstractTableModel) mainTable.getModel()).fireTableDataChanged();
                         } catch (SQLException e) {
                             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                             throw new RuntimeException(e);
@@ -297,7 +299,7 @@ public class DataView extends JFrame {
             if (o instanceof JTextField)
                 ((JTextField) o).setEditable(editable);
             if (o instanceof JComboBox)
-                ((JComboBox) o).setEnabled(editable);
+                ((JComboBox<?>) o).setEnabled(editable);
         }
     }
 
@@ -307,7 +309,7 @@ public class DataView extends JFrame {
             if (o instanceof JTextField)
                 texts.add(((JTextField) o).getText());
             if (o instanceof JComboBox)
-                texts.add(((JComboBox) o).getSelectedItem().toString());
+                texts.add(Objects.requireNonNull(((JComboBox<?>) o).getSelectedItem()).toString());
 
         }
         return texts;

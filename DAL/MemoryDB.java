@@ -195,7 +195,9 @@ public enum MemoryDB implements IRepository {
     @Override
     public BE_Department addDepartment(BE_Department department) {
         departments.sort(Comparator.comparing(BE_Department::getId));
-        return new BE_Department(employees.get(departments.size()-1).getId()+1, department.getName());
+        BE_Department newDep = new BE_Department(employees.get(departments.size()-1).getId()+1, department.getName());
+        departments.add(newDep);
+        return newDep;
     }
 
     @Override
