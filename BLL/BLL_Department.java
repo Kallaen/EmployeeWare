@@ -30,7 +30,6 @@ public class BLL_Department {
     }
 
     public boolean deleteDepartment(BE_Department department) throws SQLException, Exception {
-
         for (BE_Employee emp : bll_employee.getAllEmployees()) {
             if (emp.getDepartmentId() == department.getId())
                 throw new Exception("Cannot remove a department with associated employees!");

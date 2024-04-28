@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class DataView extends JFrame {
-
+    // TODO: Delete employee / person
     BLL_Department bll_department;
     BLL_Employee bll_employee;
     BLL_Person bll_person;
@@ -137,7 +137,7 @@ public class DataView extends JFrame {
                         try {
                             bll_employee.updateEmployee(employee);
                             ((AbstractTableModel) mainTable.getModel()).fireTableDataChanged();
-                        } catch (SQLException e) {
+                        } catch (Exception e) {
                             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                             throw new RuntimeException(e);
                         }

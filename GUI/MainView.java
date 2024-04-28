@@ -29,6 +29,8 @@ public class MainView extends JFrame {
     BLL_Employee bll_employee;
     BLL_Person bll_person;
     JTable table;
+    TableRowSorter<EmployeeTableModel> sorter;
+
 
     public MainView()  {
         bll_department = new BLL_Department();
@@ -36,11 +38,15 @@ public class MainView extends JFrame {
         bll_person = new BLL_Person();
         table = new JTable();
     }
+
     public void view() {
         setTitle("EmployeeWare");
 
         setMenuBar();
         setTable();
+
+        sorter = new TableRowSorter<EmployeeTableModel>(((EmployeeTableModel) table.getModel()));
+        table.setRowSorter(sorter);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800,700);
@@ -61,17 +67,32 @@ public class MainView extends JFrame {
         JMenuItem departmentMenu = new JMenuItem("Department");
         departmentMenu.addActionListener((event) -> new DepartmentView(table).setVisible(true));
 
-        JTextField jTxtFieldSearch = new JTextField("Search ...");
+        JMenuItem addPersonMenu = new JMenuItem("Add person");
+        addPersonMenu.addActionListener((event) -> new AddPersonView().setVisible(true));
+
+        JMenuItem addEmployeeMenu = new JMenuItem("Add employee");
+        addEmployeeMenu.addActionListener((event) -> new AddEmployeeView(table).setVisible(true));
+
+        JTextField jTxtFieldSearch = new JTextField("");
         jTxtFieldSearch.setMaximumSize(new Dimension((int) jTxtFieldSearch.getPreferredSize().getWidth() + 250, (int) jTxtFieldSearch.getPreferredSize().getHeight()));
         jTxtFieldSearch.setPreferredSize(new Dimension((int) jTxtFieldSearch.getPreferredSize().getWidth() + 250, (int) jTxtFieldSearch.getPreferredSize().getHeight()));
-        jTxtFieldSearch.addMouseListener(new MouseAdapter() {
+
+        jTxtFieldSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                if (jTxtFieldSearch.getText().toLowerCase().contains("search"))
-                    jTxtFieldSearch.setText("");
+            public void insertUpdate(DocumentEvent documentEvent) {
+                newFilter(jTxtFieldSearch);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {
+                newFilter(jTxtFieldSearch);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                newFilter(jTxtFieldSearch);
             }
         });
-        ((AbstractDocument) jTxtFieldSearch.getDocument()).setDocumentFilter(myDocumentFilter());
 
 
         JMenu optionsMenu = new JMenu("Options");
@@ -80,7 +101,6 @@ public class MainView extends JFrame {
         JCheckBoxMenuItem hideDismissedMenuItem = new JCheckBoxMenuItem("Hide dismissed");
         hideDismissedMenuItem.addActionListener((event) -> {
             if (hideDismissedMenuItem.getState()) {
-                TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(((EmployeeTableModel) table.getModel()));
                 sorter.setRowFilter(getRowFilter());
 
                 table.setRowSorter(sorter);
@@ -89,6 +109,8 @@ public class MainView extends JFrame {
             }
         });
 
+        fileMenu.add(addPersonMenu);
+        fileMenu.add(addEmployeeMenu);
         fileMenu.add(departmentMenu);
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
@@ -120,45 +142,26 @@ public class MainView extends JFrame {
         };
     }
 
-    private DocumentFilter myDocumentFilter() {
-        return new DocumentFilter() {
-            @Override
-            public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
-                super.insertString(fb, offset, text, attr);
+    private void newFilter(JTextField txtField) {
+        RowFilter<EmployeeTableModel, Object> rf = null;
+        List<RowFilter<Object,Object>> rfs =
+                new ArrayList<RowFilter<Object,Object>>();
+
+        try {
+            String text = txtField.getText();
+            String[] textArray = text.split(" ");
+
+            for (String s : textArray) {
+                rfs.add(RowFilter.regexFilter("(?i)" + s));
             }
 
-            @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                if (fb.getDocument().getText(0, fb.getDocument().getLength()).toLowerCase().contains("search")) {
-                    fb.getDocument().remove(0, fb.getDocument().getLength());
-                }
-                System.out.println(text);
-                if (fb.getDocument().getLength() >= 2) {
-                    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(((EmployeeTableModel) table.getModel()));
-                    String textToFilter = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
-                    System.out.println(fb.getDocument().getText(0, fb.getDocument().getLength()) + text);
+            rf = RowFilter.andFilter(rfs);
 
-                    sorter.setRowFilter(RowFilter.regexFilter(textToFilter, 0));
+        } catch (java.util.regex.PatternSyntaxException e) {
+            return;
+        }
 
-                    table.setRowSorter(sorter);
-                } else {
-                    table.setAutoCreateRowSorter(true);
-                }
-
-                super.replace(fb, offset, length, text, attrs);
-            }
-
-            @Override
-            public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-                System.out.println("remove");
-                System.out.println("offset: " + offset);
-                System.out.println("length: " + length);
-                if (length < 2) {
-                    table.setAutoCreateRowSorter(true);
-                }
-                super.remove(fb, offset, length);
-            }
-        };
+        sorter.setRowFilter(rf);
     }
 
     private void setTable() {
@@ -181,7 +184,7 @@ public class MainView extends JFrame {
                     }
                 }
             });
-            //table.setBounds(30,40,200,300);
+
             JScrollPane sp = new JScrollPane(table);
             table.setModel(model);
             add(sp);

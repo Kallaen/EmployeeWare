@@ -3,6 +3,7 @@ package BLL;
 import BE.BE_Employee;
 import DAL.Repository;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -36,8 +37,10 @@ public class BLL_Employee {
         return Repository.INSTANCE.addEmployee(employee);
     }
 
-    public BE_Employee updateEmployee(BE_Employee employee) throws SQLException {
-        return Repository.INSTANCE.addEmployee(employee);
+    public BE_Employee updateEmployee(BE_Employee employee) throws SQLException, Exception {
+        if (employee.getStartEmploymentDate().compareTo(employee.getEndEmploymentDate()) > 0)
+            throw new Exception("Start employment date has to come before end employment date.");
+        return Repository.INSTANCE.updateEmployee(employee);
     }
 
     public boolean deleteEmployee(BE_Employee employee) throws SQLException {

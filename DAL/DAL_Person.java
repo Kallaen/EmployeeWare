@@ -131,6 +131,7 @@ public class DAL_Person {
             stmt.setString(7, person.getAddress());
             stmt.setString(8, person.getCity());
             stmt.setString(9, person.getZipCode());
+            stmt.setInt(10, person.getId());
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected == 0) {
