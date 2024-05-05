@@ -193,6 +193,7 @@ public enum Repository implements IRepository {
 
     @Override
     public BE_Department addDepartment(BE_Department department) throws SQLException {
+        //TODO: Handle department name should be unique
         if (DBType == DatabaseType.IN_MEMORY) {
             return MemoryDB.INSTANCE.addDepartment(department);
         } else if (DBType == DatabaseType.DATABASE) {
@@ -203,6 +204,7 @@ public enum Repository implements IRepository {
 
     @Override
     public BE_Department updateDepartment(BE_Department department) throws SQLException {
+        //TODO: Handle department name should be unique
         if (DBType == DatabaseType.IN_MEMORY) {
             return MemoryDB.INSTANCE.updateDepartment(department);
         } else if (DBType == DatabaseType.DATABASE) {

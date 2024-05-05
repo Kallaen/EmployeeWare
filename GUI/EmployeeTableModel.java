@@ -3,9 +3,6 @@ package GUI;
 import BE.BE_Employee;
 
 import javax.swing.table.AbstractTableModel;
-import java.sql.Types;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class EmployeeTableModel extends AbstractTableModel {

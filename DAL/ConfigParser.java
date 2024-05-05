@@ -25,7 +25,9 @@ public enum ConfigParser {
             System.out.println("Exception: " + e);
         } finally {
             try {
-                inputStream.close();
+                if (inputStream != null) {
+                    inputStream.close();
+                }
             } catch (IOException e) {
                 throw new ExceptionInInitializerError(e.getMessage());
             }

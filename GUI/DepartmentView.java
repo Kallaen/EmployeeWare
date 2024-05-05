@@ -4,12 +4,8 @@ import BLL.BLL_Department;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.swing.*;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.table.AbstractTableModel;
 
 import BE.BE_Department;
@@ -40,10 +36,8 @@ public class DepartmentView extends JFrame {
             lstModel.addAll(bll_Department.getAllDepartments());
             JList<BE_Department> jLstDepartment = new JList<>(lstModel);
 
-            jLstDepartment.setPreferredSize(new Dimension(350,50));
-
             JScrollPane sp = new JScrollPane(jLstDepartment);
-            sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            sp.setPreferredSize(new Dimension(350,150));
 
             JPanel jPnlEdit = new JPanel(new GridBagLayout());
             jPnlEdit.setBorder(BorderFactory.createTitledBorder("Edit department"));
